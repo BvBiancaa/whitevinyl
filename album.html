@@ -614,6 +614,7 @@ function render(a) {
   // Tracklist
   const tracklistHtml = (a.tracklist || []).map(track => renderTrack(track)).join('');
 
+  //before /div <div><strong>${views}</strong>${t('visite','views')}</div>
   document.getElementById('page-content').innerHTML = `
     <div class="album-hero">
       <div class="cover-col">
@@ -629,7 +630,6 @@ function render(a) {
         <div class="meta-stats">
           <div><strong>${totalTracks}</strong>${t('tracce','tracks')}</div>
           <div><strong>${totalDuration}</strong>${t('durata','duration')}</div>
-          // <div><strong>${views}</strong>${t('visite','views')}</div>
         </div>
       </div>
     </div>

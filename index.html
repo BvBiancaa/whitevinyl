@@ -633,12 +633,12 @@ function trackView(slug) {
   localStorage.setItem('ma-stats', JSON.stringify(stats));
 }
 
+//before sessione <span>${lang === 'it' ? 'VISITE' : 'VIEWS'}: <span>${totalViews}</span></span>
 function updateStats(total) {
   const totalViews = Object.values(stats).reduce((a,b) => a+b, 0);
   document.getElementById('stats-bar').innerHTML = `
     <span>WhiteVinyl</span>
     <span>${lang === 'it' ? 'ALBUM' : 'ALBUMS'}: <span>${total}</span></span>
-    // <span>${lang === 'it' ? 'VISITE' : 'VIEWS'}: <span>${totalViews}</span></span>
     <span>${lang === 'it' ? 'SESSIONE' : 'SESSION'}: <span>${new Date().getFullYear()}</span></span>
   `;
 }
