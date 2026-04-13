@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favico.ico">
 <title>WhiteVinyl</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -36,6 +37,34 @@
     --muted: #7a726a;
     --subtle: #c8c0b8;
   }
+
+    /* :root {
+    --bg: #0a0a0a;
+    --bg2: #111;
+    --bg3: #181818;
+    --card: #141414;
+    --border: #2a2a2a;
+    --accent: #f0b1aa;
+    --accent2: #eaccc9;
+    --text: #e8e0d8;
+    --muted: #6b6460;
+    --subtle: #3a3530;
+    --font-title: 'Bebas Neue', sans-serif;
+    --font-body: 'Crimson Pro', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  [data-theme="light"] {
+    --bg: #f5f0ea;
+    --bg2: #ede8e0;
+    --bg3: #e5dfd5;
+    --card: #faf7f3;
+    --border: #d4cec6;
+    --accent: #ed9d95;
+    --accent2: #f1c6c2;
+    --text: #1a1612;
+    --muted: #7a726a;
+    --subtle: #c8c0b8;
+  } */
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -422,7 +451,7 @@
 <div class="hero">
   <p class="hero-eyebrow" data-it="Archivio musicale" data-en="Music archive">Archivio musicale</p>
   <h1 class="hero-title">WHITE<br><span>VINYL</span></h1>
-  <p class="hero-subtitle" data-it="La mia raccolta personale di album." data-en="My personal album collection.">
+  <p class="hero-subtitle" data-it="La mia raccolta personale di album. Cercando di pubblicare un album al giorno" data-en="My personal album collection. Trying to post an album everyday">
     La mia raccolta personale di album.
   </p>
   <div class="search-wrap">
@@ -435,9 +464,9 @@
       placeholder="Cerca artista, album, canzone, testo…"
       autocomplete="off"
     >
-    <span class="search-icon">⌕</span>
+    <!-- <span class="search-icon">⌕</span> -->
     <p class="search-hint" data-it="Ricerca tollerante agli errori di battitura" data-en="Typo-tolerant search">
-      Ricerca tollerante agli errori di battitura
+      Ricerca intelligente, ignora gli errori di battitura
     </p>
   </div>
 </div>
@@ -468,18 +497,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// const DEMO_ALBUMS = [
-//   {
-//     slug: 'black-sabbath-black-sabbath',
-//     artist: 'Black Sabbath',
-//     album: 'Black Sabbath',
-//     year: 1970,
-//     genre: ['Heavy Metal', 'Doom Metal'],
-//     tags: ['debut', 'classic', 'doom'],
-//     cover_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/43/Black_Sabbath_-_Black_Sabbath.png/220px-Black_Sabbath_-_Black_Sabbath.png',
-//   }
-// ];
-
 // ── STATE ───────────────────────────────────────────────
 let allAlbums = [];
 let fuse = null;
@@ -507,24 +524,17 @@ function applyTheme() {
 
 // ── FETCH ALBUMS ─────────────────────────────────────────
 async function fetchAlbums() {
-  // Prova Supabase; se fallisce usa demo
-  if (SUPABASE_URL.includes('TUO-PROGETTO')) {
-    allAlbums = DEMO_ALBUMS;
-    renderAll(allAlbums);
-    return;
-  }
   try {
     const { data, error } = await db
       .from('albums')
       .select('slug, artist, album, year, genre, tags, cover_url')
-      .order('artist', { ascending: true });
+      .order('artist', { ascending: true })
+      .order('album', { ascending: true });
     if (error) throw error;
     allAlbums = data;
     renderAll(allAlbums);
   } catch (e) {
     console.warn('Supabase fallback:', e.message);
-    allAlbums = DEMO_ALBUMS;
-    renderAll(allAlbums);
   }
 }
 
@@ -536,6 +546,7 @@ function setupFuse(albums) {
       { name: 'album', weight: 3 },
       { name: 'genre', weight: 1 },
       { name: 'tags', weight: 1 },
+      { name: 'tracklist', weight: 1 },
     ],
     threshold: 0.4,
     includeScore: true,

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favico.ico">
 <title>WhiteVinyl — Album</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -34,6 +35,34 @@
     --muted: #7a726a;
     --subtle: #c8c0b8;
   }
+
+    /* :root {
+    --bg: #0a0a0a;
+    --bg2: #111;
+    --bg3: #181818;
+    --card: #141414;
+    --border: #2a2a2a;
+    --accent: #f0b1aa;
+    --accent2: #eaccc9;
+    --text: #e8e0d8;
+    --muted: #6b6460;
+    --subtle: #3a3530;
+    --font-title: 'Bebas Neue', sans-serif;
+    --font-body: 'Crimson Pro', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  [data-theme="light"] {
+    --bg: #f5f0ea;
+    --bg2: #ede8e0;
+    --bg3: #e5dfd5;
+    --card: #faf7f3;
+    --border: #d4cec6;
+    --accent: #ed9d95;
+    --accent2: #f1c6c2;
+    --text: #1a1612;
+    --muted: #7a726a;
+    --subtle: #c8c0b8;
+  } */
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -532,13 +561,8 @@ function t(it, en) { return lang === 'it' ? it : en; }
 // ── FETCH ────────────────────────────────────────────────
 async function loadAlbum() {
   const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug') || 'black-sabbath-black-sabbath';
+  const slug = params.get('slug');
 
-  if (SUPABASE_URL.includes('TUO-PROGETTO')) {
-    album = DEMO;
-    render(album);
-    return;
-  }
   try {
     const { createClient } = supabase;
     const db_client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -551,8 +575,7 @@ async function loadAlbum() {
     album = data;
     render(album);
   } catch(e) {
-    album = DEMO;
-    render(album);
+    throw e;
   }
 }
 
@@ -614,7 +637,7 @@ function render(a) {
     <div class="content-wrap">
       <div class="content-main">
         <div class="section">
-          <p class="section-label">${t('Recensione','Review')}</p>
+          <p class="section-label">${t('Introduzione','Introduction')}</p>
           <p class="prose">${t(a.review_it, a.review_en) || ''}</p>
         </div>
 
@@ -650,6 +673,10 @@ function render(a) {
           <div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:4px">
             ${(a.tags || []).map(tag => `<span class="pill">${tag}</span>`).join('')}
           </div>
+        </div>
+        <div class="sidebar-card">
+          <p class="sidebar-title">${t('Voto','Rating')}</p>
+          <div class="sidebar-row"><span class="sidebar-val">${a.rating} / 10</span></div>
         </div>
       </aside>
     </div>
