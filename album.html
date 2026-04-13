@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhiteVynil — Album</title>
+<title>WhiteVinyl — Album</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -450,7 +450,7 @@
 <body>
 
 <header>
-  <a class="logo" href="./index.html">WHITE <span>VYNIL</span></a>
+  <a class="logo" href="./index.html">WHITE <span>VINYL</span></a>
   <div class="header-controls">
     <button class="toggle-btn" id="lang-toggle">EN</button>
     <button class="toggle-btn" id="theme-toggle">☀</button>
@@ -561,7 +561,7 @@ function render(a) {
   // Breadcrumb
   document.getElementById('bc-artist').textContent = a.artist;
   document.getElementById('bc-album').textContent = a.album;
-  document.title = `${a.artist} — ${a.album} | WhiteVynil`;
+  document.title = `${a.artist} — ${a.album} | WhiteVinyl`;
 
   // Stats
   const views = stats[a.slug] || 0;

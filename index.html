@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhiteVynil</title>
+<title>WhiteVinyl</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
@@ -411,7 +411,7 @@
 <header>
   <a class="logo" href="index.html">
     <div class="logo-icon"><span class="logo-icon-inner">B</span></div>
-    WHITE <span>VYNIL</span>
+    WHITE <span>VINYL</span>
   </a>
   <div class="header-controls">
     <button class="toggle-btn" id="lang-toggle">EN</button>
@@ -421,7 +421,7 @@
 
 <div class="hero">
   <p class="hero-eyebrow" data-it="Archivio musicale" data-en="Music archive">Archivio musicale</p>
-  <h1 class="hero-title">WHITE<br><span>VYNIL</span></h1>
+  <h1 class="hero-title">WHITE<br><span>VINYL</span></h1>
   <p class="hero-subtitle" data-it="La mia raccolta personale di album." data-en="My personal album collection.">
     La mia raccolta personale di album.
   </p>
@@ -456,7 +456,7 @@
 </main>
 
 <div class="stats-bar" id="stats-bar">
-  <span>WhiteVynil</span>
+  <span>WhiteVinyl</span>
 </div>
 
 <script>
@@ -625,7 +625,7 @@ function trackView(slug) {
 function updateStats(total) {
   const totalViews = Object.values(stats).reduce((a,b) => a+b, 0);
   document.getElementById('stats-bar').innerHTML = `
-    <span>WhiteVynil</span>
+    <span>WhiteVinyl</span>
     <span>${lang === 'it' ? 'ALBUM' : 'ALBUMS'}: <span>${total}</span></span>
     <span>${lang === 'it' ? 'VISITE' : 'VIEWS'}: <span>${totalViews}</span></span>
     <span>${lang === 'it' ? 'SESSIONE' : 'SESSION'}: <span>${new Date().getFullYear()}</span></span>
