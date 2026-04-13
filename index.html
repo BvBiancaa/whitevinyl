@@ -583,7 +583,7 @@ function renderCard(a) {
   ).join('');
 
   return `
-    <a class="album-card" href="pages/album.html?slug=${a.slug}" onclick="trackView('${a.slug}')">
+    <a class="album-card" href="album.html?slug=${a.slug}" onclick="trackView('${a.slug}')">
       <div class="card-cover-wrap">
         ${coverHtml}
         <div class="card-overlay">
