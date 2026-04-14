@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favico.ico">
+<title>WhiteVinyl — Artista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --bg: #0a0a0a; --bg2: #111; --bg3: #181818; --card: #141414;
+    --border: #2a2a2a; --accent: #c0392b; --accent2: #e74c3c;
+    --text: #e8e0d8; --muted: #6b6460; --subtle: #3a3530;
+    --font-title: 'Bebas Neue', sans-serif;
+    --font-body: 'Crimson Pro', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  [data-theme="light"] {
+    --bg: #f5f0ea; --bg2: #ede8e0; --bg3: #e5dfd5; --card: #faf7f3;
+    --border: #d4cec6; --accent: #c0392b; --text: #1a1612;
+    --muted: #7a726a; --subtle: #c8c0b8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-body); font-size: 18px;
+    min-height: 100vh; transition: background 0.3s, color 0.3s;
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 0 32px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: var(--font-title); font-size: 24px;
+    letter-spacing: 0.08em; color: var(--text); text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  .header-controls { display: flex; align-items: center; gap: 16px; }
+  .toggle-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 6px 14px; font-family: var(--font-mono); font-size: 11px;
+    cursor: pointer; letter-spacing: 0.1em; transition: all 0.2s;
+  }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    padding: 16px 32px; font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.12em; color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .breadcrumb a { color: var(--muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .sep { color: var(--subtle); }
+  .breadcrumb .current { color: var(--text); }
+
+  /* ── ARTIST HERO ── */
+  .artist-hero {
+    max-width: 1100px; margin: 0 auto;
+    padding: 60px 32px 48px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-end; gap: 48px;
+  }
+  .artist-initial {
+    font-family: var(--font-title);
+    font-size: clamp(100px, 16vw, 180px);
+    line-height: 0.85;
+    color: var(--border);
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .artist-meta {}
+  .artist-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.25em; color: var(--accent);
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .artist-name {
+    font-family: var(--font-title);
+    font-size: clamp(36px, 6vw, 72px);
+    letter-spacing: 0.04em;
+    line-height: 0.92;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .artist-stats {
+    display: flex; gap: 32px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  }
+  .artist-stats strong {
+    display: block; font-size: 22px; color: var(--text);
+    font-family: var(--font-title); letter-spacing: 0.05em;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline-wrap {
+    max-width: 1100px; margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+  .timeline-header {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.2em; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 40px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .timeline-header span { color: var(--accent); }
+
+  /* Ogni anno è un "blocco" */
+  .year-block { margin-bottom: 48px; }
+  .year-label {
+    font-family: var(--font-title);
+    font-size: 56px;
+    letter-spacing: 0.06em;
+    color: var(--subtle);
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+  .year-albums {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2px;
+  }
+
+  /* ── ALBUM CARD (variante orizzontale per artista) ── */
+  .album-row {
+    background: var(--card);
+    border: 1px solid var(--border);
+    text-decoration: none; color: var(--text);
+    display: flex; align-items: center; gap: 0;
+    transition: border-color 0.2s;
+    overflow: hidden;
+  }
+  .album-row:hover { border-color: var(--accent); }
+  .album-row:hover .row-cover { transform: scale(1.06); }
+
+  .row-cover-wrap {
+    width: 90px; height: 90px;
+    flex-shrink: 0; overflow: hidden; background: var(--bg3);
+  }
+  .row-cover {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block; transition: transform 0.4s ease;
+  }
+  .row-cover-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-title); font-size: 32px; color: var(--subtle);
+  }
+  .row-info {
+    padding: 14px 18px; flex: 1; min-width: 0;
+    border-left: 1px solid var(--border);
+  }
+  .row-album {
+    font-family: var(--font-body); font-size: 17px;
+    font-weight: 600; color: var(--text); margin-bottom: 6px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .row-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+  .pill {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.08em; padding: 2px 8px;
+    border: 1px solid var(--border); color: var(--muted);
+    text-transform: uppercase;
+  }
+  .pill.accent { border-color: var(--accent); color: var(--accent); }
+
+  /* ── RELATED ARTISTS (future) / loading ── */
+  .loading-full {
+    min-height: 50vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px;
+  }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 2px solid var(--subtle); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--subtle); }
+
+  @media (max-width: 768px) {
+    .artist-hero { flex-direction: column; gap: 0; padding: 32px 16px 32px; }
+    .artist-initial { font-size: 80px; margin-bottom: 8px; }
+    .timeline-wrap { padding: 32px 16px 60px; }
+    header { padding: 0 16px; }
+    .breadcrumb { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="./index.html">WHITE <span>VINYL</span></a>
+  <div class="header-controls">
+    <button class="toggle-btn" id="lang-toggle">EN</button>
+    <button class="toggle-btn" id="theme-toggle">☀</button>
+  </div>
+</header>
+
+<div class="breadcrumb">
+  <a href="./index.html">Home</a>
+  <span class="sep">›</span>
+  <span class="current" id="bc-artist">…</span>
+</div>
+
+<div id="page-content">
+  <div class="loading-full">
+    <div class="spinner"></div>
+    <p style="font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:0.15em">CARICAMENTO</p>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://yxjqrcupvlbduvcixudu.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4anFyY3VwdmxiZHV2Y2l4dWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODUyNTcsImV4cCI6MjA5MTY2MTI1N30.rd_Ng1QhZC3556bNUjkpe0uAcnIsJfgf6N3-FcQWWE0';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let lang   = localStorage.getItem('ma-lang')   || 'it';
+let theme  = localStorage.getItem('ma-theme')  || 'dark';
+
+function t(it, en) { return lang === 'it' ? it : en; }
+
+function applyTheme() {
+  document.documentElement.dataset.theme = theme === 'light' ? 'light' : '';
+  document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '☾';
+}
+
+// ── FETCH ────────────────────────────────────────────────
+async function loadArtist() {
+  const params = new URLSearchParams(window.location.search);
+  // slug = nome artista url-encoded (es. "black-sabbath")
+  const rawSlug = params.get('slug') || '';
+
+  try {
+    // Cerca tutti gli album dell'artista.
+    const { data, error } = await db
+      .from('albums')
+      .select('slug, artist, album, year, genre, tags, cover_url')
+      .order('year',  { ascending: true })
+      .order('album', { ascending: true });
+
+    if (error) throw error;
+
+    // Filtra lato client per slug artista
+    const albums = (data || []).filter(a =>
+      toSlug(a.artist) === rawSlug
+    );
+
+    if (!albums.length) {
+      document.getElementById('page-content').innerHTML =
+        `<div style="padding:80px 32px;text-align:center;font-family:var(--font-mono);color:var(--muted)">Artista non trovato</div>`;
+      return;
+    }
+
+    render(albums);
+  } catch(e) {
+    document.getElementById('page-content').innerHTML =
+      `<div style="padding:80px 32px;text-align:center;font-family:var(--font-mono);color:var(--muted)">Errore: ${e.message}</div>`;
+  }
+}
+
+function toSlug(name) {
+  return encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'));
+}
+
+// ── RENDER ───────────────────────────────────────────────
+function render(albums) {
+  const artistName = albums[0].artist;
+  document.title = `${artistName} | WhiteVinyl`;
+  document.getElementById('bc-artist').textContent = artistName;
+
+  // Calcola anni di attività degli album inseriti
+  const years = albums.map(a => a.year).filter(Boolean).sort((a,b) => a-b);
+  const firstYear = years[0] || '—';
+  const lastYear  = years[years.length - 1] || '—';
+  const span = (firstYear !== '—' && firstYear !== lastYear)
+    ? `${firstYear} – ${lastYear}`
+    : String(firstYear);
+
+  // Raggruppa per anno
+  const byYear = {};
+  albums.forEach(a => {
+    const y = a.year || '—';
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push(a);
+  });
+
+  // Ordina anni crescenti (— alla fine)
+  const sortedYears = Object.keys(byYear).sort((a, b) => {
+    if (a === '—') return 1;
+    if (b === '—') return -1;
+    return Number(a) - Number(b);
+  });
+
+  const timelineHtml = sortedYears.map(year => {
+    const yearAlbums = byYear[year];
+    const albumsHtml = yearAlbums.map(a => {
+      const cover = a.cover_url
+        ? `<img class="row-cover" src="${a.cover_url}" alt="${a.album}" loading="lazy">`
+        : `<div class="row-cover-placeholder">♩</div>`;
+      const genrePills = (a.genre || []).slice(0,2).map(g =>
+        `<span class="pill accent">${g}</span>`).join('');
+      const tagPills = (a.tags || []).slice(0,2).map(g =>
+        `<span class="pill">${g}</span>`).join('');
+
+      return `<a class="album-row" href="album.html?slug=${a.slug}">
+        <div class="row-cover-wrap">${cover}</div>
+        <div class="row-info">
+          <p class="row-album">${a.album}</p>
+          <div class="row-pills">${genrePills}${tagPills}</div>
+        </div>
+      </a>`;
+    }).join('');
+
+    return `<div class="year-block">
+      <div class="year-label">${year}</div>
+      <div class="year-albums">${albumsHtml}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('page-content').innerHTML = `
+    <div class="artist-hero">
+      <div class="artist-initial">${artistName[0].toUpperCase()}</div>
+      <div class="artist-meta">
+        <p class="artist-label">${t('Artista','Artist')}</p>
+        <h1 class="artist-name">${artistName}</h1>
+        <div class="artist-stats">
+          <div><strong>${albums.length}</strong>${t('album','albums')}</div>
+          ${firstYear !== '—' ? `<div><strong>${span}</strong>${t('anni','years')}</div>` : ''}
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-wrap">
+      <div class="timeline-header">
+        ${t('Discografia','Discography')} <span>${albums.length} ${t('album','albums')}</span>
+      </div>
+      ${timelineHtml}
+    </div>
+  `;
+}
+
+// ── CONTROLS ─────────────────────────────────────────────
+document.getElementById('lang-toggle').addEventListener('click', () => {
+  lang = lang === 'it' ? 'en' : 'it';
+  localStorage.setItem('ma-lang', lang);
+  document.getElementById('lang-toggle').textContent = lang === 'it' ? 'EN' : 'IT';
+  document.documentElement.lang = lang;
+  // Re-render senza re-fetch
+  loadArtist();
+});
+
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('ma-theme', theme);
+  applyTheme();
+});
+
+applyTheme();
+document.getElementById('lang-toggle').textContent = lang === 'it' ? 'EN' : 'IT';
+document.documentElement.lang = lang;
+loadArtist();
+</script>
+</body>
+</html>

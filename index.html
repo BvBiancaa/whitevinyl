@@ -38,34 +38,6 @@
     --subtle: #c8c0b8;
   }
 
-    /* :root {
-    --bg: #0a0a0a;
-    --bg2: #111;
-    --bg3: #181818;
-    --card: #141414;
-    --border: #2a2a2a;
-    --accent: #f0b1aa;
-    --accent2: #eaccc9;
-    --text: #e8e0d8;
-    --muted: #6b6460;
-    --subtle: #3a3530;
-    --font-title: 'Bebas Neue', sans-serif;
-    --font-body: 'Crimson Pro', serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
-  [data-theme="light"] {
-    --bg: #f5f0ea;
-    --bg2: #ede8e0;
-    --bg3: #e5dfd5;
-    --card: #faf7f3;
-    --border: #d4cec6;
-    --accent: #ed9d95;
-    --accent2: #f1c6c2;
-    --text: #1a1612;
-    --muted: #7a726a;
-    --subtle: #c8c0b8;
-  } */
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -77,7 +49,6 @@
     transition: background 0.3s, color 0.3s;
   }
 
-  /* ── HEADER ── */
   header {
     position: sticky;
     top: 0;
@@ -91,7 +62,6 @@
     justify-content: space-between;
     backdrop-filter: blur(12px);
   }
-
   .logo {
     font-family: var(--font-title);
     font-size: 28px;
@@ -102,32 +72,16 @@
     align-items: center;
     gap: 10px;
   }
-  .logo span {
-    color: var(--accent);
-  }
+  .logo span { color: var(--accent); }
   .logo-icon {
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     border: 2px solid var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-title);
-    font-size: 16px;
-    color: var(--accent);
-    transform: rotate(45deg);
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-title); font-size: 16px; color: var(--accent);
+    transform: rotate(45deg); flex-shrink: 0;
   }
-  .logo-icon-inner {
-    transform: rotate(-45deg);
-  }
-
-  .header-controls {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
+  .logo-icon-inner { transform: rotate(-45deg); }
+  .header-controls { display: flex; align-items: center; gap: 16px; }
   .toggle-btn {
     background: none;
     border: 1px solid var(--border);
@@ -139,17 +93,8 @@
     letter-spacing: 0.1em;
     transition: all 0.2s;
   }
-  .toggle-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .toggle-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-  }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── HERO ── */
   .hero {
     padding: 80px 32px 60px;
     max-width: 900px;
@@ -183,11 +128,7 @@
   }
 
   /* ── SEARCH ── */
-  .search-wrap {
-    position: relative;
-    max-width: 640px;
-    margin: 0 auto;
-  }
+  .search-wrap { position: relative; max-width: 640px; margin: 0 auto; }
   .search-input {
     width: 100%;
     background: var(--card);
@@ -195,7 +136,7 @@
     color: var(--text);
     font-family: var(--font-body);
     font-size: 20px;
-    padding: 18px 56px 18px 24px;
+    padding: 18px 24px;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     border-radius: 0;
@@ -204,16 +145,6 @@
   .search-input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(192,57,43,0.12);
-  }
-  .search-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    pointer-events: none;
-    font-family: var(--font-mono);
-    font-size: 16px;
   }
   .search-hint {
     font-family: var(--font-mono);
@@ -225,13 +156,82 @@
     padding-left: 4px;
   }
 
-  /* ── MAIN LAYOUT ── */
+  /* ── SEARCH RESULTS (track matches) ── */
+  #track-results {
+    display: none;
+    max-width: 640px;
+    margin: 8px auto 0;
+    border: 1px solid var(--border);
+    background: var(--card);
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  #track-results.visible { display: block; }
+  .track-result-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .track-result-item:last-child { border-bottom: none; }
+  .track-result-item:hover { background: var(--bg3); }
+  .tri-icon {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    width: 36px;
+    text-align: center;
+    opacity: 0.7;
+  }
+  .tri-info { flex: 1; min-width: 0; }
+  .tri-track {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tri-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tri-meta span { color: var(--accent); }
+  .tri-snippet {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tri-dur {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
   main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 32px 80px;
   }
-
   .section-header {
     display: flex;
     align-items: baseline;
@@ -247,13 +247,8 @@
     color: var(--muted);
     text-transform: uppercase;
   }
-  .section-count {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--accent);
-  }
+  .section-count { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
 
-  /* ── ALBUM LIST ── */
   #albums-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -267,161 +262,66 @@
     text-decoration: none;
     color: var(--text);
     display: block;
-    transition: border-color 0.2s, transform 0.2s;
+    transition: border-color 0.2s;
     position: relative;
     overflow: hidden;
   }
-  .album-card:hover {
-    border-color: var(--accent);
-    z-index: 1;
-  }
+  .album-card:hover { border-color: var(--accent); z-index: 1; }
   .album-card:hover .card-overlay { opacity: 1; }
   .album-card:hover .card-cover { transform: scale(1.04); }
 
-  .card-cover-wrap {
-    aspect-ratio: 1;
-    overflow: hidden;
-    background: var(--bg3);
-  }
-  .card-cover {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-    display: block;
-  }
+  .card-cover-wrap { aspect-ratio: 1; overflow: hidden; background: var(--bg3); }
+  .card-cover { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
   .card-cover-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-title);
-    font-size: 48px;
-    color: var(--subtle);
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-title); font-size: 48px; color: var(--subtle);
     background: var(--bg3);
   }
-
   .card-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    aspect-ratio: 1;
+    position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 1;
     background: linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.9));
-    opacity: 0;
-    transition: opacity 0.3s;
-    display: flex;
-    align-items: flex-end;
-    padding: 16px;
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 16px;
   }
   .card-play {
-    background: var(--accent);
-    color: white;
-    padding: 6px 14px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
+    background: var(--accent); color: white;
+    padding: 6px 14px; font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.15em;
   }
-
-  .card-info {
-    padding: 14px 16px 16px;
-    border-top: 1px solid var(--border);
-  }
+  .card-info { padding: 14px 16px 16px; border-top: 1px solid var(--border); }
   .card-artist {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 4px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase;
+    margin-bottom: 4px; cursor: pointer;
+    display: inline-block;
   }
-  .card-album {
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-year {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-  }
-  .card-tags {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-  }
-  .tag {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    border: 1px solid var(--subtle);
-    padding: 2px 6px;
-    text-transform: uppercase;
-  }
+  .card-artist:hover { text-decoration: underline; }
+  .card-album { font-family: var(--font-body); font-size: 16px; font-weight: 600; line-height: 1.3; color: var(--text); margin-bottom: 8px; }
+  .card-meta { display: flex; align-items: center; gap: 8px; }
+  .card-year { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+  .card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--subtle); padding: 2px 6px; text-transform: uppercase; }
 
-  /* ── LOADING / EMPTY / ERROR ── */
-  .state-msg {
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--muted);
-    font-style: italic;
-    grid-column: 1/-1;
-  }
-  .state-msg .big {
-    font-family: var(--font-title);
-    font-size: 48px;
-    color: var(--subtle);
-    display: block;
-    margin-bottom: 12px;
-    letter-spacing: 0.1em;
-  }
-
-  .spinner {
-    width: 32px;
-    height: 32px;
-    border: 2px solid var(--subtle);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 16px;
-  }
+  .state-msg { text-align: center; padding: 80px 20px; color: var(--muted); font-style: italic; grid-column: 1/-1; }
+  .state-msg .big { font-family: var(--font-title); font-size: 48px; color: var(--subtle); display: block; margin-bottom: 12px; letter-spacing: 0.1em; }
+  .spinner { width: 32px; height: 32px; border: 2px solid var(--subtle); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── DIVIDER (alphabet) ── */
   .alpha-divider {
     grid-column: 1/-1;
-    font-family: var(--font-title);
-    font-size: 48px;
-    letter-spacing: 0.1em;
-    color: var(--subtle);
-    padding: 24px 0 8px;
-    border-top: 1px solid var(--border);
-    margin-top: 16px;
+    font-family: var(--font-title); font-size: 48px; letter-spacing: 0.1em;
+    color: var(--subtle); padding: 24px 0 8px;
+    border-top: 1px solid var(--border); margin-top: 16px;
   }
 
-  /* ── STATS BAR ── */
   .stats-bar {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    padding: 10px 32px;
-    display: flex;
-    gap: 32px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
+    background: var(--bg2); border-top: 1px solid var(--border);
+    padding: 10px 32px; display: flex; gap: 32px;
+    font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em;
   }
   .stats-bar span { color: var(--accent); }
 
-  /* ── SCROLLBAR ── */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--subtle); }
@@ -464,10 +364,11 @@
       placeholder="Cerca artista, album, canzone, testo…"
       autocomplete="off"
     >
-    <!-- <span class="search-icon">⌕</span> -->
-    <p class="search-hint" data-it="Ricerca intelligente, più o meno" data-en="Typo-tolerant search">
-      Ricerca intelligente, ignora gli errori di battitura
+    <p class="search-hint" data-it="Ricerca intelligente — artisti, album, canzoni, testi" data-en="Smart search — artists, albums, tracks, lyrics">
+      Ricerca intelligente — artisti, album, canzoni, testi
     </p>
+    <!-- Track-level results dropdown -->
+    <div id="track-results"></div>
   </div>
 </div>
 
@@ -479,7 +380,7 @@
   <div id="albums-list">
     <div class="state-msg">
       <div class="spinner"></div>
-      <span class="big" data-it="CARICAMENTO" data-en="LOADING">CARICAMENTO</span>
+      <span class="big">CARICAMENTO</span>
     </div>
   </div>
 </main>
@@ -489,17 +390,16 @@
 </div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────
 const SUPABASE_URL = 'https://yxjqrcupvlbduvcixudu.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4anFyY3VwdmxiZHV2Y2l4dWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODUyNTcsImV4cCI6MjA5MTY2MTI1N30.rd_Ng1QhZC3556bNUjkpe0uAcnIsJfgf6N3-FcQWWE0'; // anon key
-// ────────────────────────────────────────────────────────
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4anFyY3VwdmxiZHV2Y2l4dWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODUyNTcsImV4cCI6MjA5MTY2MTI1N30.rd_Ng1QhZC3556bNUjkpe0uAcnIsJfgf6N3-FcQWWE0';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── STATE ───────────────────────────────────────────────
-let allAlbums = [];
-let fuse = null;
+let allAlbums = [];   // dati base per le card
+let allTracks = [];   // dati flat per ricerca tracce: {title, lyrics, description_it, description_en, albumSlug, artist, album, duration}
+let fuseAlbums = null;
+let fuseTracks = null;
 let lang = localStorage.getItem('ma-lang') || 'it';
 let theme = localStorage.getItem('ma-theme') || 'dark';
 let stats = JSON.parse(localStorage.getItem('ma-stats') || '{}');
@@ -516,60 +416,89 @@ function applyLang() {
   document.documentElement.lang = lang;
 }
 
-// ── THEME ────────────────────────────────────────────────
 function applyTheme() {
   document.documentElement.dataset.theme = theme === 'light' ? 'light' : '';
   document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '☾';
 }
 
-// ── FETCH ALBUMS ─────────────────────────────────────────
+// ── FETCH ────────────────────────────────────────────────
+// Fetcha tutto (inclusa tracklist) una volta sola.
 async function fetchAlbums() {
   try {
     const { data, error } = await db
       .from('albums')
-      .select('slug, artist, album, year, genre, tags, cover_url')
+      .select('slug, artist, album, year, genre, tags, cover_url, tracklist')
       .order('artist', { ascending: true })
-      .order('album', { ascending: true });
+      .order('album',  { ascending: true });
     if (error) throw error;
+
     allAlbums = data;
+    buildTrackIndex(data);
     renderAll(allAlbums);
   } catch (e) {
-    console.warn('Supabase fallback:', e.message);
+    console.warn('Supabase error:', e.message);
+    document.getElementById('albums-list').innerHTML = `
+      <div class="state-msg"><span class="big">!</span>Errore caricamento</div>`;
   }
 }
 
-// ── FUSE.JS SETUP ────────────────────────────────────────
-function setupFuse(albums) {
-  fuse = new Fuse(albums, {
+// ── TRACK INDEX ──────────────────────────────────────────
+function buildTrackIndex(albums) {
+  allTracks = [];
+  albums.forEach(a => {
+    (a.tracklist || []).forEach(tr => {
+      allTracks.push({
+        title:          tr.title || '',
+        duration:       tr.duration || '',
+        lyrics:         tr.lyrics || '',
+        description_it: tr.description_it || '',
+        description_en: tr.description_en || '',
+        albumSlug:      a.slug,
+        artist:         a.artist,
+        album:          a.album,
+        cover_url:      a.cover_url,
+        number:         tr.number,
+      });
+    });
+  });
+
+  fuseTracks = new Fuse(allTracks, {
     keys: [
-      { name: 'artist', weight: 3 },
-      { name: 'album', weight: 3 },
-      { name: 'genre', weight: 1 },
-      { name: 'tags', weight: 1 },
-      { name: 'tracklist', weight: 1 },
+      { name: 'title',          weight: 4 },
+      { name: 'lyrics',         weight: 2 },
+      { name: 'description_it', weight: 1 },
+      { name: 'description_en', weight: 1 },
+    ],
+    threshold: 0.35,
+    includeMatches: true,
+    ignoreLocation: true,   // cerca in tutto il testo, non solo all'inizio
+    minMatchCharLength: 2,
+  });
+
+  fuseAlbums = new Fuse(allAlbums, {
+    keys: [
+      { name: 'artist', weight: 4 },
+      { name: 'album',  weight: 4 },
+      { name: 'genre',  weight: 1 },
+      { name: 'tags',   weight: 1 },
     ],
     threshold: 0.4,
     includeScore: true,
   });
 }
 
-// ── RENDER ───────────────────────────────────────────────
+// ── RENDER ALBUM GRID ────────────────────────────────────
 function renderAll(albums) {
-  setupFuse(albums);
   const count = document.getElementById('count');
   count.textContent = `${albums.length} ${lang === 'it' ? 'album' : 'albums'}`;
   updateStats(albums.length);
 
   const list = document.getElementById('albums-list');
   if (!albums.length) {
-    list.innerHTML = `<div class="state-msg">
-      <span class="big">∅</span>
-      <span data-it="Nessun album trovato" data-en="No albums found">${lang === 'it' ? 'Nessun album trovato' : 'No albums found'}</span>
-    </div>`;
+    list.innerHTML = `<div class="state-msg"><span class="big">∅</span>${lang === 'it' ? 'Nessun album trovato' : 'No albums found'}</div>`;
     return;
   }
 
-  // Raggruppa per lettera
   let html = '';
   let currentLetter = '';
   albums.forEach(a => {
@@ -581,28 +510,33 @@ function renderAll(albums) {
     html += renderCard(a);
   });
   list.innerHTML = html;
+
+  // Artist link click — va alla pagina artista invece di aprire l'album
+  document.querySelectorAll('.card-artist[data-artist-link]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const slug = el.dataset.artistLink;
+      window.location.href = `artist.html?slug=${slug}`;
+    });
+  });
 }
 
 function renderCard(a) {
-  const views = stats[a.slug] || 0;
   const coverHtml = a.cover_url
     ? `<img class="card-cover" src="${a.cover_url}" alt="${a.album}" loading="lazy">`
     : `<div class="card-cover-placeholder">♩</div>`;
-
-  const genreTags = (a.genre || []).slice(0,2).map(g =>
-    `<span class="tag">${g}</span>`
-  ).join('');
+  const genreTags = (a.genre || []).slice(0,2).map(g => `<span class="tag">${g}</span>`).join('');
+  const artistSlug = encodeURIComponent(a.artist.toLowerCase().replace(/\s+/g, '-'));
 
   return `
     <a class="album-card" href="album.html?slug=${a.slug}" onclick="trackView('${a.slug}')">
       <div class="card-cover-wrap">
         ${coverHtml}
-        <div class="card-overlay">
-          <span class="card-play">${lang === 'it' ? 'APRI' : 'OPEN'} →</span>
-        </div>
+        <div class="card-overlay"><span class="card-play">${lang === 'it' ? 'APRI' : 'OPEN'} →</span></div>
       </div>
       <div class="card-info">
-        <p class="card-artist">${a.artist}</p>
+        <p class="card-artist" data-artist-link="${artistSlug}">${a.artist}</p>
         <p class="card-album">${a.album}</p>
         <div class="card-meta">
           <span class="card-year">${a.year || '—'}</span>
@@ -613,19 +547,79 @@ function renderCard(a) {
 }
 
 // ── SEARCH ───────────────────────────────────────────────
+const searchEl   = document.getElementById('search');
+const trackPanel = document.getElementById('track-results');
 let searchTimeout;
-document.getElementById('search').addEventListener('input', e => {
+
+searchEl.addEventListener('input', e => {
   clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    const q = e.target.value.trim();
-    if (!q) {
-      renderAll(allAlbums);
-      return;
-    }
-    const results = fuse.search(q).map(r => r.item);
-    renderAll(results);
-  }, 180);
+  searchTimeout = setTimeout(() => handleSearch(e.target.value.trim()), 180);
 });
+
+// Chiudi dropdown cliccando fuori
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap')) hideTrackPanel();
+});
+
+searchEl.addEventListener('focus', () => {
+  if (searchEl.value.trim().length > 1) handleSearch(searchEl.value.trim());
+});
+
+function handleSearch(q) {
+  if (!q || q.length < 2) {
+    hideTrackPanel();
+    renderAll(allAlbums);
+    return;
+  }
+
+  // 1. Album grid: filtra per artista/album/genere
+  const albumResults = fuseAlbums
+    ? fuseAlbums.search(q).map(r => r.item)
+    : allAlbums;
+
+  renderAll(albumResults);
+
+  // 2. Track dropdown: cerca in titoli, testi, descrizioni
+  if (!fuseTracks || !allTracks.length) { hideTrackPanel(); return; }
+
+  const trackResults = fuseTracks.search(q, { limit: 8 });
+  if (!trackResults.length) { hideTrackPanel(); return; }
+
+  renderTrackPanel(q, trackResults);
+}
+
+function renderTrackPanel(q, results) {
+  const html = results.map(r => {
+    const tr = r.item;
+    // Estrai uno snippet dal testo se il match è nei lyrics
+    let snippet = '';
+    const lyricsMatch = r.matches && r.matches.find(m => m.key === 'lyrics');
+    if (lyricsMatch && lyricsMatch.indices && lyricsMatch.indices[0]) {
+      const [start, end] = lyricsMatch.indices[0];
+      const raw = tr.lyrics;
+      const from = Math.max(0, start - 20);
+      const to   = Math.min(raw.length, end + 40);
+      snippet = (from > 0 ? '…' : '') + raw.slice(from, to).replace(/\n/g, ' ') + (to < raw.length ? '…' : '');
+    }
+
+    return `<a class="track-result-item" href="album.html?slug=${tr.albumSlug}&track=${encodeURIComponent(tr.title)}">
+      <span class="tri-icon">♩</span>
+      <span class="tri-info">
+        <span class="tri-track">${tr.title}</span>
+        <span class="tri-meta"><span>${tr.artist}</span> — ${tr.album}</span>
+        ${snippet ? `<span class="tri-snippet">${snippet}</span>` : ''}
+      </span>
+      <span class="tri-dur">${tr.duration}</span>
+    </a>`;
+  }).join('');
+
+  trackPanel.innerHTML = html;
+  trackPanel.classList.add('visible');
+}
+
+function hideTrackPanel() {
+  trackPanel.classList.remove('visible');
+}
 
 // ── STATS ────────────────────────────────────────────────
 function trackView(slug) {
@@ -633,9 +627,7 @@ function trackView(slug) {
   localStorage.setItem('ma-stats', JSON.stringify(stats));
 }
 
-//before sessione <span>${lang === 'it' ? 'VISITE' : 'VIEWS'}: <span>${totalViews}</span></span>
 function updateStats(total) {
-  const totalViews = Object.values(stats).reduce((a,b) => a+b, 0);
   document.getElementById('stats-bar').innerHTML = `
     <span>WhiteVinyl</span>
     <span>${lang === 'it' ? 'ALBUM' : 'ALBUMS'}: <span>${total}</span></span>
@@ -657,7 +649,6 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   applyTheme();
 });
 
-// ── INIT ─────────────────────────────────────────────────
 applyLang();
 applyTheme();
 fetchAlbums();

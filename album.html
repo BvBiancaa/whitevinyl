@@ -10,120 +10,46 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --bg: #0a0a0a;
-    --bg2: #111;
-    --bg3: #181818;
-    --card: #141414;
-    --border: #2a2a2a;
-    --accent: #c0392b;
-    --accent2: #e74c3c;
-    --text: #e8e0d8;
-    --muted: #6b6460;
-    --subtle: #3a3530;
+    --bg: #0a0a0a; --bg2: #111; --bg3: #181818; --card: #141414;
+    --border: #2a2a2a; --accent: #c0392b; --accent2: #e74c3c;
+    --text: #e8e0d8; --muted: #6b6460; --subtle: #3a3530;
     --font-title: 'Bebas Neue', sans-serif;
     --font-body: 'Crimson Pro', serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
   [data-theme="light"] {
-    --bg: #f5f0ea;
-    --bg2: #ede8e0;
-    --bg3: #e5dfd5;
-    --card: #faf7f3;
-    --border: #d4cec6;
-    --accent: #c0392b;
-    --text: #1a1612;
-    --muted: #7a726a;
-    --subtle: #c8c0b8;
+    --bg: #f5f0ea; --bg2: #ede8e0; --bg3: #e5dfd5; --card: #faf7f3;
+    --border: #d4cec6; --accent: #c0392b; --text: #1a1612;
+    --muted: #7a726a; --subtle: #c8c0b8;
   }
-
-    /* :root {
-    --bg: #0a0a0a;
-    --bg2: #111;
-    --bg3: #181818;
-    --card: #141414;
-    --border: #2a2a2a;
-    --accent: #f0b1aa;
-    --accent2: #eaccc9;
-    --text: #e8e0d8;
-    --muted: #6b6460;
-    --subtle: #3a3530;
-    --font-title: 'Bebas Neue', sans-serif;
-    --font-body: 'Crimson Pro', serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
-  [data-theme="light"] {
-    --bg: #f5f0ea;
-    --bg2: #ede8e0;
-    --bg3: #e5dfd5;
-    --card: #faf7f3;
-    --border: #d4cec6;
-    --accent: #ed9d95;
-    --accent2: #f1c6c2;
-    --text: #1a1612;
-    --muted: #7a726a;
-    --subtle: #c8c0b8;
-  } */
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 1.7;
-    transition: background 0.3s, color 0.3s;
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-body); font-size: 18px;
+    line-height: 1.7; transition: background 0.3s, color 0.3s;
   }
 
-  /* ── HEADER ── */
   header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    padding: 0 32px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 0 32px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
     backdrop-filter: blur(12px);
   }
-  .logo {
-    font-family: var(--font-title);
-    font-size: 24px;
-    letter-spacing: 0.08em;
-    color: var(--text);
-    text-decoration: none;
-  }
+  .logo { font-family: var(--font-title); font-size: 24px; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
   .logo span { color: var(--accent); }
-  .header-controls {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+  .header-controls { display: flex; align-items: center; gap: 16px; }
   .toggle-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 6px 14px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    cursor: pointer;
-    letter-spacing: 0.1em;
-    transition: all 0.2s;
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 6px 14px; font-family: var(--font-mono); font-size: 11px;
+    cursor: pointer; letter-spacing: 0.1em; transition: all 0.2s;
   }
   .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── BREADCRUMB ── */
   .breadcrumb {
-    padding: 16px 32px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    padding: 16px 32px; font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.12em; color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
     border-bottom: 1px solid var(--border);
   }
   .breadcrumb a { color: var(--muted); text-decoration: none; }
@@ -131,334 +57,93 @@
   .breadcrumb .sep { color: var(--subtle); }
   .breadcrumb .current { color: var(--text); }
 
-  /* ── ALBUM HERO ── */
   .album-hero {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 0;
+    display: grid; grid-template-columns: 320px 1fr; gap: 0;
     border-bottom: 1px solid var(--border);
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 48px 32px 48px;
+    max-width: 1100px; margin: 0 auto; padding: 48px 32px;
   }
   .cover-col { position: relative; }
-  .cover-img {
-    width: 100%;
-    max-width: 300px;
-    aspect-ratio: 1;
-    object-fit: cover;
-    display: block;
-    border: 1px solid var(--border);
-  }
+  .cover-img { width: 100%; max-width: 300px; aspect-ratio: 1; object-fit: cover; display: block; border: 1px solid var(--border); }
   .cover-badge {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    background: var(--accent);
-    color: white;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    padding: 4px 10px;
+    position: absolute; bottom: -1px; left: 0;
+    background: var(--accent); color: white;
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; padding: 4px 10px;
   }
-
-  .meta-col {
-    padding-left: 48px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-  .meta-artist {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .meta-title {
-    font-family: var(--font-title);
-    font-size: clamp(42px, 6vw, 80px);
-    letter-spacing: 0.04em;
-    line-height: 0.92;
-    color: var(--text);
-    margin-bottom: 24px;
-  }
-  .meta-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-  .pill {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    padding: 5px 12px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .pill.accent {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .meta-stats {
-    display: flex;
-    gap: 32px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
+  .meta-col { padding-left: 48px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .meta-artist { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+  /* Artist name in hero is also a link */
+  .meta-artist a { color: var(--accent); text-decoration: none; }
+  .meta-artist a:hover { text-decoration: underline; }
+  .meta-title { font-family: var(--font-title); font-size: clamp(42px, 6vw, 80px); letter-spacing: 0.04em; line-height: 0.92; color: var(--text); margin-bottom: 24px; }
+  .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .pill { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; padding: 5px 12px; border: 1px solid var(--border); color: var(--muted); text-transform: uppercase; }
+  .pill.accent { border-color: var(--accent); color: var(--accent); }
+  .meta-stats { display: flex; gap: 32px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
   .meta-stats strong { display: block; font-size: 22px; color: var(--text); font-family: var(--font-title); letter-spacing: 0.05em; }
 
-  /* ── CONTENT ── */
   .content-wrap {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 32px;
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 48px;
-    padding-top: 48px;
-    padding-bottom: 80px;
+    max-width: 1100px; margin: 0 auto; padding: 48px 32px 80px;
+    display: grid; grid-template-columns: 1fr 320px; gap: 48px;
   }
-  .content-main {}
-  .content-sidebar {}
+  .section { margin-bottom: 48px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .prose { font-family: var(--font-body); font-size: 18px; line-height: 1.75; color: var(--text); font-weight: 300; }
 
-  /* Sezioni */
-  .section {
-    margin-bottom: 48px;
-  }
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  .prose {
-    font-family: var(--font-body);
-    font-size: 18px;
-    line-height: 1.75;
-    color: var(--text);
-    font-weight: 300;
-  }
-  .prose em { font-style: italic; color: var(--muted); }
-  .prose strong { font-weight: 600; }
-
-  /* ── TRACKLIST ── */
-  .tracklist {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  .tracklist { display: flex; flex-direction: column; gap: 0; }
+  .track { border: 1px solid var(--border); margin-bottom: -1px; transition: border-color 0.2s; }
+  .track.open { border-color: var(--accent); margin-bottom: 8px; margin-top: 4px; z-index: 1; position: relative; }
+  /* highlight when opened via URL param */
+  .track.highlight { animation: flashHighlight 1.2s ease; }
+  @keyframes flashHighlight {
+    0%   { box-shadow: 0 0 0 3px rgba(192,57,43,0.5); }
+    100% { box-shadow: none; }
   }
 
-  .track {
-    border: 1px solid var(--border);
-    margin-bottom: -1px;
-    transition: border-color 0.2s;
-  }
-  .track.open {
-    border-color: var(--accent);
-    margin-bottom: 8px;
-    margin-top: 4px;
-    z-index: 1;
-    position: relative;
-  }
-
-  .track-header {
-    display: grid;
-    grid-template-columns: 40px 1fr auto auto;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 20px;
-    cursor: pointer;
-    transition: background 0.15s;
-    user-select: none;
-  }
+  .track-header { display: grid; grid-template-columns: 40px 1fr auto auto; align-items: center; gap: 16px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; user-select: none; }
   .track-header:hover { background: var(--bg3); }
-
-  .track-num {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    text-align: center;
-  }
+  .track-num { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: center; }
   .track.open .track-num { color: var(--accent); }
-
-  .track-name {
-    font-family: var(--font-body);
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--text);
-  }
-
-  .track-dur {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .track-arrow {
-    font-size: 10px;
-    color: var(--subtle);
-    transition: transform 0.25s;
-  }
+  .track-name { font-family: var(--font-body); font-size: 18px; font-weight: 400; color: var(--text); }
+  .track-dur { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .track-arrow { font-size: 10px; color: var(--subtle); transition: transform 0.25s; }
   .track.open .track-arrow { transform: rotate(180deg); color: var(--accent); }
 
-  /* Track body */
-  .track-body {
-    display: none;
-    border-top: 1px solid var(--border);
-  }
+  .track-body { display: none; border-top: 1px solid var(--border); }
   .track.open .track-body { display: block; }
+  .track-description { padding: 20px 24px 16px; font-family: var(--font-body); font-size: 17px; line-height: 1.7; color: var(--text); font-weight: 300; border-bottom: 1px solid var(--border); }
 
-  .track-description {
-    padding: 20px 24px 16px;
-    font-family: var(--font-body);
-    font-size: 17px;
-    line-height: 1.7;
-    color: var(--text);
-    font-weight: 300;
-    border-bottom: 1px solid var(--border);
-  }
+  .track-player { padding: 16px 24px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+  .player-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .player-label::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+  .yt-embed { width: 100%; aspect-ratio: 16/9; border: none; background: #000; display: block; }
+  .spotify-embed { width: 100%; border: none; background: transparent; border-radius: 0; height: 80px; margin-top: 8px; }
 
-  /* YouTube embed */
-  .track-player {
-    padding: 16px 24px;
-    background: var(--bg3);
-    border-bottom: 1px solid var(--border);
-  }
-  .player-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .player-label::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-  }
-  .yt-embed {
-    width: 100%;
-    aspect-ratio: 16/9;
-    border: none;
-    background: #000;
-    display: block;
-  }
-
-  /* Spotify mini */
-  .spotify-embed {
-    width: 100%;
-    border: none;
-    background: transparent;
-    border-radius: 0;
-    height: 80px;
-    margin-top: 8px;
-  }
-
-  /* Lyrics */
   .track-lyrics-toggle {
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    transition: color 0.2s;
-    background: none;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    text-align: left;
-    width: 100%;
+    padding: 12px 24px; display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em;
+    color: var(--muted); cursor: pointer; border-bottom: 1px solid var(--border);
+    transition: color 0.2s; background: none;
+    border-left: none; border-right: none; border-top: none;
+    text-align: left; width: 100%;
   }
   .track-lyrics-toggle:hover { color: var(--accent); }
-  .track-lyrics {
-    padding: 20px 24px 24px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.9;
-    color: var(--muted);
-    white-space: pre-wrap;
-    display: none;
-    background: var(--bg2);
-  }
+  .track-lyrics { padding: 20px 24px 24px; font-family: var(--font-mono); font-size: 13px; line-height: 1.9; color: var(--muted); white-space: pre-wrap; display: none; background: var(--bg2); }
   .track-lyrics.visible { display: block; }
 
-  /* ── SIDEBAR ── */
-  .sidebar-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  .sidebar-title {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .sidebar-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 16px;
-  }
+  .sidebar-card { background: var(--card); border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
+  .sidebar-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
+  .sidebar-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 16px; }
   .sidebar-row:last-child { border-bottom: none; }
   .sidebar-key { color: var(--muted); font-size: 14px; }
   .sidebar-val { color: var(--text); font-weight: 400; text-align: right; }
+  /* Artist link in sidebar */
+  .sidebar-val a { color: var(--text); text-decoration: none; }
+  .sidebar-val a:hover { color: var(--accent); text-decoration: underline; }
 
-  /* Poem / extra */
-  .poem {
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-style: italic;
-    line-height: 1.8;
-    color: var(--muted);
-    white-space: pre-wrap;
-    border-left: 2px solid var(--accent);
-    padding-left: 16px;
-    margin: 16px 0;
-  }
+  .poem { font-family: var(--font-body); font-size: 16px; font-style: italic; line-height: 1.8; color: var(--muted); white-space: pre-wrap; border-left: 2px solid var(--accent); padding-left: 16px; margin: 16px 0; }
 
-  /* ── LOADING ── */
-  .loading-full {
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-  .spinner {
-    width: 32px; height: 32px;
-    border: 2px solid var(--subtle);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
+  .loading-full { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  .spinner { width: 32px; height: 32px; border: 2px solid var(--subtle); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   ::-webkit-scrollbar { width: 4px; }
@@ -489,7 +174,8 @@
 <div class="breadcrumb" id="breadcrumb">
   <a href="./index.html">Home</a>
   <span class="sep">›</span>
-  <span class="current" id="bc-artist">…</span>
+  <!-- bc-artist diventa un link cliccabile -->
+  <a class="current" id="bc-artist" href="#">…</a>
   <span class="sep">›</span>
   <span class="current" id="bc-album">…</span>
 </div>
@@ -502,93 +188,53 @@
 </div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────
 const SUPABASE_URL = 'https://yxjqrcupvlbduvcixudu.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4anFyY3VwdmxiZHV2Y2l4dWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODUyNTcsImV4cCI6MjA5MTY2MTI1N30.rd_Ng1QhZC3556bNUjkpe0uAcnIsJfgf6N3-FcQWWE0';
-// ────────────────────────────────────────────────────────
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// const DEMO = {
-//   slug: 'black-sabbath-black-sabbath',
-//   artist: 'Black Sabbath',
-//   album: 'Black Sabbath',
-//   year: 1970,
-//   genre: ['Heavy Metal', 'Doom Metal', 'Hard Rock'],
-//   tags: ['debut', 'classic', 'doom', 'occult'],
-//   cover_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/43/Black_Sabbath_-_Black_Sabbath.png/220px-Black_Sabbath_-_Black_Sabbath.png',
-//   review_it: 'Uscito il 13 febbraio 1970, il debut album dei Black Sabbath è considerato la pietra fondante dell\'heavy metal. Il suono rivoluzionario nasce dalle dita mutilate di Tony Iommi: dopo un incidente in una fabbrica di lamiere a 17 anni, che gli costò le punte delle dita medie della mano sul manico, Iommi si costruì protesi di plastica ricavate da un flacone di detersivo e ridispose le corde della chitarra, aggiungendo una corda da banjo al posto della prima. Il risultato: un suono più basso, più pesante, più oscuro di qualsiasi cosa esistesse prima.',
-//   review_en: 'Released on February 13, 1970, Black Sabbath\'s debut album is considered the founding stone of heavy metal. The revolutionary sound was born from Tony Iommi\'s severed fingertips: after an accident at a sheet metal factory at age 17, he built plastic prosthetics from a detergent bottle and rearranged the guitar strings, adding a banjo string in place of the first. The result: a sound lower, heavier, and darker than anything that existed before.',
-//   cover_story_it: 'La copertina fu scattata da Keith Macmillan (Keef) al Mapledurham Watermill, un mulino storico nell\'Oxfordshire, scelto per il suo aspetto "fatiscente e sinistro". La figura misteriosa è la modella Louisa Livingstone, spesso interpretata come una strega. La sua identità rimase segreta per decenni. Macmillan usò pellicola Kodak Aerochrome infrarossi — normalmente riservata alla fotografia aerea — per produrre toni rosa e verdi innaturali, poi sperimentò bollendo e congelando la pellicola per renderla granulosa.',
-//   cover_story_en: 'The cover was shot by Keith Macmillan (Keef) at Mapledurham Watermill, a historic mill in Oxfordshire, chosen for its "run-down and eerie feel". The mysterious figure is model Louisa Livingstone, often interpreted as a witch. Macmillan used Kodak Aerochrome infrared film — normally reserved for aerial photography — to produce unnatural pink and green tones, later experimenting with boiling and freezing it to make it grainy.',
-//   extra_sections: [
-//     {
-//       title_it: 'Il manico di Iommi',
-//       title_en: 'Iommi\'s technique',
-//       content_it: 'Iommi creò un paio di protesi per le dita usando la plastica di un flacone di detersivo per piatti e cambiò la disposizione delle corde della chitarra. Sostituì la seconda corda con la prima, la terza con la seconda, e così via. Al posto della prima, aggiunse una corda da banjo, per facilitarsi le note piegate. Il risultato fu uno strumento accordato più in basso del normale, da cui il suono greve e oscuro che definirà il metal.',
-//       content_en: 'Iommi created prosthetic fingertips from a dish detergent bottle and changed the string arrangement: he replaced the second string with the first, the third with the second, and added a banjo string in place of the first, making bends easier. The result was an instrument tuned lower than normal — the source of the heavy, dark sound that would define metal.'
-//     },
-//     {
-//       title_it: 'Il gatefold e la poesia',
-//       title_en: 'The gatefold and the poem',
-//       content_it: 'All\'interno del gatefold, una croce rovesciata incornicia i crediti dell\'album e la poesia di Roger Brown "Still Falls the Rain", che anticipa temi di decadenza e terrore. Sia la croce che il testo erano scelte grafiche, non posizioni spirituali della band — ma bastarono ad alimentare accuse di occultismo per anni.',
-//       content_en: 'Inside the gatefold, an inverted cross frames the credits and Roger Brown\'s poem "Still Falls the Rain", introducing themes of decay and dread. Both the cross and the poem were graphic choices, not spiritual statements — yet they fueled accusations of occultism for years.',
-//       poem: 'Still falls the rain,\nthe veils of darkness shroud the blackened trees,\nwhich, contorted by some unseen violence,\nshed their tired leaves,\nand bend their boughs towards a grey earth of severed bird wings.\nAmong the grasses,\npoppies bleed before a gesticulating death\nand young rabbits, born dead in traps, stand motionless,\nas though guarding the silence that surrounds and threatens to engulf all those that would listen.'
-//     }
-//   ],
-//   tracklist: [
-//     { number:1, title:'Black Sabbath', duration:'6:16', youtube_id:'0lVdMbUx1_k', spotify_id:'5rjNHPKJINBBqhBzb0TVZB', description_it:'Ispirata a un\'esperienza vissuta da Geezer Butler: dopo aver dipinto il suo appartamento di nero opaco e appeso crocifissi rovesciati, si svegliò vedendo una grande figura nera in piedi alla fine del letto. Ozzy scrisse i testi basandosi su questo racconto. È considerato il primo brano doom metal della storia. Il riff principale sviluppa il cosiddetto "diabolus in musica", il tritono — intervallo associato da secoli a connotazioni demoniache.', description_en:'Inspired by an experience Geezer Butler had: after painting his apartment matte black and hanging inverted crucifixes, he woke to see a large black figure at the end of his bed. Ozzy wrote the lyrics based on this account. Considered the first doom metal song. The main riff develops the "diabolus in musica" — the tritone, an interval associated for centuries with demonic connotations.', lyrics:'What is this that stands before me?\nFigure in black which points at me\nTurn around quick, and start to run\nFind out I\'m the chosen one\nOh no\n\nBig black shape with eyes of fire\nTelling people their desire\nSatan\'s sitting there, he\'s smiling\nWatches those flames get higher and higher\nOh no, no, please God help me\n\nIs it the end, my friend?\nSatan\'s coming \'round the bend\npeople running \'cause they\'re scared\nThe people better go and beware\nNo, no, please, no' },
-//     { number:2, title:'The Wizard', duration:'4:24', youtube_id:'gb7NRqhg0BM', description_it:'Geezer Butler ha dichiarato che i testi furono ispirati dal mago Gandalf de Il Signore degli Anelli. Una canzone su un mago che usa la sua magia per incoraggiare le persone che incontra — un respiro di luce nell\'oscurità dell\'album.', description_en:'Geezer Butler stated the lyrics were inspired by the wizard Gandalf from The Lord of the Rings. A song about a wizard who uses his magic to encourage people — a breath of light in the album\'s darkness.', lyrics:'Misty morning, clouds in the sky\nWithout warning, the wizard walks by\nCasting his shadow, weaving his spell\nFunny clothes, tinkling bell\n\nNever talking\nJust keeps walking\nspreading his magic\n\nEvil power disappears\nDemons worry when the wizard is near\nHe turns tears into joy\nEveryone\'s happy when the wizard walks by' },
-//     { number:3, title:'Behind the Wall of Sleep', duration:'3:37', youtube_id:'mM1ixizLcao', description_it:'Basata sul racconto di H.P. Lovecraft "Beyond the Wall of Sleep". La storia parla di un\'entità ultraterrena che cerca di comunicare attraverso un malato di mente moribondo in un ospedale psichiatrico. Coverizzata dai Static-X nel 2009.', description_en:'Based on H.P. Lovecraft\'s "Beyond the Wall of Sleep". The story follows an otherworldly entity trying to communicate through a dying inmate in a mental hospital. Covered by Static-X in 2009.', lyrics:'Visions cupped within a flower\nDeadly petals with strange power\nFaces shine a deadly smile\nLook upon you at your trial\n\nNow from darkness there springs light\nWall of Sleep is cool and bright\nWall of Sleep is lying broken\nSun shines in you have awoken' },
-//     { number:4, title:'N.I.B.', duration:'6:08', youtube_id:'sTJ7AzBIJoI', description_it:'I testi sono in prima persona dal punto di vista di Lucifero. Geezer Butler ha detto: "la canzone parlava del diavolo che si innamora e cambia completamente, diventando una persona buona." Il titolo è un riferimento alla barba del batterista Bill Ward, simile a un pennino.', description_en:'The lyrics are in the first person from Lucifer\'s point of view. Geezer Butler said: "the song was about the devil falling in love and totally changing, becoming a good person." The title refers to drummer Bill Ward\'s beard, which resembled a pen nib.', lyrics:'Some people say my love cannot be true\nplease believe me, my love, and I\'ll show you\nI will give you those things you thought unreal\nThe sun, the moon, the stars all bear my seal\n\nLook into my eyes, you will see who I am\nmy name is Lucifer, please take my hand' },
-//     { number:5, title:'Evil Woman', duration:'3:25', youtube_id:'4dV2I8TgKtE', description_it:'Cover di una canzone della band di Minneapolis "Crow". I testi descrivono un uomo che accusa una donna di mentire e di tentare di attribuirgli la paternità di un figlio non suo. Fu inclusa nell\'edizione americana in sostituzione di un altro brano.', description_en:'Cover of a song by Minneapolis band Crow. The lyrics describe a man accusing a woman of lying and trying to frame him for a child that is not his. It replaced another track on the American edition of the album.', lyrics:'I\'ve seen a look of evil in your eyes\nYou\'ve been filling me all full of lies\nSorrow will not change your shameful deeds\n\nEvil woman, don\'t you play your games with me' },
-//     { number:6, title:'Sleeping Village', duration:'3:46', youtube_id:'IgjNqeW6mFE', description_it:'Una canzone su un disastro imminente che sta per abbattersi su un villaggio ignaro. L\'atmosfera pastorale del testo contrasta con la tensione musicale sottostante, creando un senso di quiete prima della tempesta.', description_en:'A song about a disaster about to befall an unsuspecting village. The pastoral atmosphere contrasts with the underlying musical tension, creating a sense of calm before the storm.', lyrics:'Red sun risin\' in the sky\nSleeping village, cock\'rel\'s cry\nSoft breeze blowin\' in the trees\nPeace of mind, feel at ease' },
-//     { number:7, title:'Warning', duration:'10:28', youtube_id:'x6b-MRs6Bzo', description_it:'Cover di Aynsley Dunbar Retaliation. Una serie di "avvertimenti" per stare lontano da una donna — dal paesaggio (primo verso), dal subconscio in forma di sogno profetico (secondo verso), e dalla donna stessa (terzo verso). Avvertimenti che lui ignora perché i suoi sentimenti sono più forti della saggezza.', description_en:'Cover of Aynsley Dunbar Retaliation. A series of warnings to stay away from a woman — from the landscape (first verse), from the subconscious as a prophetic dream (second verse), and from the woman herself (third verse). Warnings he ignores because his feelings are stronger than wisdom.', lyrics:'Now the first day that I met ya\nI was looking in the sky\nWhen the sun turned all a blur\nand the thunderclouds rolled by\nThe sea began to shiver\nand the wind began to moan\nIt must\'ve been a sign for me\nto leave you well alone' },
-//     { number:8, title:'Wicked World', duration:'4:47', youtube_id:'dPq4w3ZHLaE', description_it:'La canzone parla dei molti problemi della Terra: il denaro speso in guerre invece di aiutare il genere umano, i politici che decidono chi deve morire, gli uomini mandati sulla luna mentre le persone qui muoiono di malattie. Fu inclusa nell\'edizione americana dell\'album.', description_en:'The song addresses Earth\'s many problems: money spent on wars instead of helping humanity, politicians deciding who must die, men sent to the moon while people here die of diseases. It was included on the American edition of the album.', lyrics:'The world today is such a wicked thing\nFighting going on between the human race\nPeople give good wishes to all their friends\nWhile people just across the sea are counting the dead' }
-//   ]
-// };
-
-// ── STATE ────────────────────────────────────────────────
-let lang = localStorage.getItem('ma-lang') || 'it';
+let lang  = localStorage.getItem('ma-lang')  || 'it';
 let theme = localStorage.getItem('ma-theme') || 'dark';
 let stats = JSON.parse(localStorage.getItem('ma-stats') || '{}');
 let album = null;
 
-// ── HELPERS ──────────────────────────────────────────────
 function t(it, en) { return lang === 'it' ? it : en; }
+function toSlug(name) { return encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-')); }
 
-// ── FETCH ────────────────────────────────────────────────
 async function loadAlbum() {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
 
   try {
-    const { createClient } = supabase;
     const db_client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const { data, error } = await db_client
-      .from('albums')
-      .select('*')
-      .eq('slug', slug)
-      .single();
+      .from('albums').select('*').eq('slug', slug).single();
     if (error) throw error;
     album = data;
     render(album);
   } catch(e) {
-    throw e;
+    document.getElementById('page-content').innerHTML =
+      `<div style="padding:80px 32px;text-align:center;font-family:var(--font-mono);color:var(--muted)">Errore: ${e.message}</div>`;
   }
 }
 
-// ── RENDER ───────────────────────────────────────────────
 function render(a) {
+  const artistSlug = toSlug(a.artist);
+  const artistUrl  = `./artist.html?slug=${artistSlug}`;
+
   // Breadcrumb
-  document.getElementById('bc-artist').textContent = a.artist;
+  const bcArtist = document.getElementById('bc-artist');
+  bcArtist.textContent = a.artist;
+  bcArtist.href = artistUrl;
+  bcArtist.style.color = 'var(--muted)';
+  bcArtist.addEventListener('mouseover', () => bcArtist.style.color = 'var(--accent)');
+  bcArtist.addEventListener('mouseout',  () => bcArtist.style.color = 'var(--muted)');
+
   document.getElementById('bc-album').textContent = a.album;
   document.title = `${a.artist} — ${a.album} | WhiteVinyl`;
 
-  // Stats
-  const views = stats[a.slug] || 0;
-  const totalTracks = (a.tracklist || []).length;
+  const totalTracks   = (a.tracklist || []).length;
   const totalDuration = calcTotalDuration(a.tracklist);
 
   const pillsHtml = (a.genre || []).map(g =>
@@ -597,24 +243,16 @@ function render(a) {
     (a.tags || []).map(tag => `<span class="pill">${tag}</span>`)
   ).join('');
 
-  // Extra sections
   let extraHtml = '';
   (a.extra_sections || []).forEach(s => {
-    const title = t(s.title_it, s.title_en);
+    const title   = t(s.title_it, s.title_en);
     const content = t(s.content_it, s.content_en);
-    const poem = s.poem ? `<div class="poem">${s.poem}</div>` : '';
-    extraHtml += `
-      <div class="section">
-        <p class="section-label">${title}</p>
-        <p class="prose">${content}</p>
-        ${poem}
-      </div>`;
+    const poem    = s.poem ? `<div class="poem">${s.poem}</div>` : '';
+    extraHtml += `<div class="section"><p class="section-label">${title}</p><p class="prose">${content}</p>${poem}</div>`;
   });
 
-  // Tracklist
   const tracklistHtml = (a.tracklist || []).map(track => renderTrack(track)).join('');
 
-  //before /div <div><strong>${views}</strong>${t('visite','views')}</div>
   document.getElementById('page-content').innerHTML = `
     <div class="album-hero">
       <div class="cover-col">
@@ -624,7 +262,7 @@ function render(a) {
         <div class="cover-badge">${a.year || '—'}</div>
       </div>
       <div class="meta-col">
-        <p class="meta-artist">${a.artist}</p>
+        <p class="meta-artist"><a href="${artistUrl}">${a.artist}</a></p>
         <h1 class="meta-title">${a.album}</h1>
         <div class="meta-pills">${pillsHtml}</div>
         <div class="meta-stats">
@@ -658,7 +296,10 @@ function render(a) {
       <aside class="content-sidebar">
         <div class="sidebar-card">
           <p class="sidebar-title">${t('Info album','Album info')}</p>
-          <div class="sidebar-row"><span class="sidebar-key">${t('Artista','Artist')}</span><span class="sidebar-val">${a.artist}</span></div>
+          <div class="sidebar-row">
+            <span class="sidebar-key">${t('Artista','Artist')}</span>
+            <span class="sidebar-val"><a href="${artistUrl}">${a.artist}</a></span>
+          </div>
           <div class="sidebar-row"><span class="sidebar-key">${t('Titolo','Title')}</span><span class="sidebar-val">${a.album}</span></div>
           <div class="sidebar-row"><span class="sidebar-key">${t('Anno','Year')}</span><span class="sidebar-val">${a.year || '—'}</span></div>
           <div class="sidebar-row"><span class="sidebar-key">${t('Tracce','Tracks')}</span><span class="sidebar-val">${totalTracks}</span></div>
@@ -674,10 +315,11 @@ function render(a) {
             ${(a.tags || []).map(tag => `<span class="pill">${tag}</span>`).join('')}
           </div>
         </div>
+        ${a.rating ? `
         <div class="sidebar-card">
           <p class="sidebar-title">${t('Voto','Rating')}</p>
           <div class="sidebar-row"><span class="sidebar-val">${a.rating} / 10</span></div>
-        </div>
+        </div>` : ''}
       </aside>
     </div>
   `;
@@ -695,6 +337,9 @@ function render(a) {
         : `▼ ${t('Mostra testi','Show lyrics')}`;
     });
   });
+
+  // Auto-apri traccia se arrivato dalla ricerca (?track=NomeTraccia)
+  autoOpenTrackFromUrl();
 }
 
 function renderTrack(tr) {
@@ -704,10 +349,7 @@ function renderTrack(tr) {
       <div class="player-label">YOUTUBE</div>
       <iframe class="yt-embed"
         src="https://www.youtube.com/embed/${tr.youtube_id}?enablejsapi=1"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-        loading="lazy"
-        title="${tr.title}">
+        allow="autoplay; encrypted-media" allowfullscreen loading="lazy" title="${tr.title}">
       </iframe>
     </div>` : '';
 
@@ -716,8 +358,7 @@ function renderTrack(tr) {
       <div class="player-label">SPOTIFY</div>
       <iframe class="spotify-embed"
         src="https://open.spotify.com/embed/track/${tr.spotify_id}?utm_source=generator&theme=0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy">
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
       </iframe>
     </div>` : '';
 
@@ -735,9 +376,7 @@ function renderTrack(tr) {
       </div>
       <div class="track-body">
         ${desc ? `<div class="track-description">${desc}</div>` : ''}
-        ${ytEmbed}
-        ${spEmbed}
-        ${lyricsSection}
+        ${ytEmbed}${spEmbed}${lyricsSection}
       </div>
     </div>`;
 }
@@ -746,14 +385,28 @@ function toggleTrack(trackEl) {
   const wasOpen = trackEl.classList.contains('open');
   document.querySelectorAll('.track.open').forEach(t => t.classList.remove('open'));
   if (!wasOpen) trackEl.classList.add('open');
-
-  // Track stats
   const slug = trackEl.dataset.slug;
   if (slug) {
-    const key = `track-${slug}`;
-    stats[key] = (stats[key] || 0) + 1;
+    stats[`track-${slug}`] = (stats[`track-${slug}`] || 0) + 1;
     localStorage.setItem('ma-stats', JSON.stringify(stats));
   }
+}
+
+// Apre e scrolla alla traccia specificata nel parametro ?track=
+function autoOpenTrackFromUrl() {
+  const params    = new URLSearchParams(window.location.search);
+  const trackName = params.get('track');
+  if (!trackName) return;
+
+  const decoded = decodeURIComponent(trackName);
+  document.querySelectorAll('.track').forEach(el => {
+    if (el.dataset.slug === decoded) {
+      el.classList.add('open', 'highlight');
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 350);
+    }
+  });
 }
 
 function calcTotalDuration(tracklist) {
@@ -764,12 +417,9 @@ function calcTotalDuration(tracklist) {
     const parts = t.duration.split(':');
     total += parseInt(parts[0]) * 60 + parseInt(parts[1]);
   });
-  const m = Math.floor(total / 60);
-  const s = total % 60;
-  return `${m}:${String(s).padStart(2,'0')}`;
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2,'0')}`;
 }
 
-// ── CONTROLS ─────────────────────────────────────────────
 function applyTheme() {
   document.documentElement.dataset.theme = theme === 'light' ? 'light' : '';
   document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '☾';
@@ -789,7 +439,6 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   applyTheme();
 });
 
-// ── INIT ─────────────────────────────────────────────────
 applyTheme();
 document.getElementById('lang-toggle').textContent = lang === 'it' ? 'EN' : 'IT';
 document.documentElement.lang = lang;
