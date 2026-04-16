@@ -9,160 +9,99 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root {
-    --bg: #0a0a0a; --bg2: #111; --bg3: #181818; --card: #141414;
-    --border: #2a2a2a; --accent: #c0392b; --accent2: #e74c3c;
-    --text: #e8e0d8; --muted: #6b6460; --subtle: #3a3530;
-    --font-title: 'Bebas Neue', sans-serif;
-    --font-body: 'Crimson Pro', serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
-  [data-theme="light"] {
-    --bg: #f5f0ea; --bg2: #ede8e0; --bg3: #e5dfd5; --card: #faf7f3;
-    --border: #d4cec6; --accent: #c0392b; --text: #1a1612;
-    --muted: #7a726a; --subtle: #c8c0b8;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg); color: var(--text);
-    font-family: var(--font-body); font-size: 18px;
-    line-height: 1.7; transition: background 0.3s, color 0.3s;
-  }
+  :root{--bg:#0a0a0a;--bg2:#111;--bg3:#181818;--card:#141414;--border:#2a2a2a;--accent:#c0392b;--accent2:#e74c3c;--text:#e8e0d8;--muted:#6b6460;--subtle:#3a3530;--font-title:'Bebas Neue',sans-serif;--font-body:'Crimson Pro',serif;--font-mono:'JetBrains Mono',monospace;}
+  [data-theme="light"]{--bg:#f5f0ea;--bg2:#ede8e0;--bg3:#e5dfd5;--card:#faf7f3;--border:#d4cec6;--accent:#c0392b;--text:#1a1612;--muted:#7a726a;--subtle:#c8c0b8;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:18px;line-height:1.7;transition:background .3s,color .3s;}
+  header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);}
+  .logo{font-family:var(--font-title);font-size:24px;letter-spacing:.08em;color:var(--text);text-decoration:none;}
+  .logo span{color:var(--accent);}
+  .header-controls{display:flex;align-items:center;gap:16px;}
+  .toggle-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;font-family:var(--font-mono);font-size:11px;cursor:pointer;letter-spacing:.1em;transition:all .2s;}
+  .toggle-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .breadcrumb{padding:16px 32px;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--subtle);}
+  .breadcrumb .current{color:var(--text);}
+  .album-hero{display:grid;grid-template-columns:320px 1fr;gap:0;border-bottom:1px solid var(--border);max-width:1100px;margin:0 auto;padding:48px 32px;}
+  .cover-col{position:relative;}
+  .cover-img{width:100%;max-width:300px;aspect-ratio:1;object-fit:cover;display:block;border:1px solid var(--border);}
+  .cover-badge{position:absolute;bottom:-1px;left:0;background:var(--accent);color:white;font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;padding:4px 10px;}
+  .meta-col{padding-left:48px;display:flex;flex-direction:column;justify-content:flex-end;}
+  .meta-artist{font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+  .meta-artist a{color:var(--accent);text-decoration:none;}
+  .meta-artist a:hover{text-decoration:underline;}
+  .meta-title{font-family:var(--font-title);font-size:clamp(42px,6vw,80px);letter-spacing:.04em;line-height:.92;color:var(--text);margin-bottom:24px;}
+  .meta-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .pill{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;padding:5px 12px;border:1px solid var(--border);color:var(--muted);text-transform:uppercase;}
+  .pill.accent{border-color:var(--accent);color:var(--accent);}
+  .meta-stats{display:flex;gap:32px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+  .meta-stats strong{display:block;font-size:22px;color:var(--text);font-family:var(--font-title);letter-spacing:.05em;}
+  .content-wrap{max-width:1100px;margin:0 auto;padding:48px 32px 80px;display:grid;grid-template-columns:1fr 320px;gap:48px;}
+  .section{margin-bottom:48px;}
+  .section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .prose{font-family:var(--font-body);font-size:18px;line-height:1.75;color:var(--text);font-weight:300;}
+  .tracklist{display:flex;flex-direction:column;gap:0;}
+  .track{border:1px solid var(--border);margin-bottom:-1px;transition:border-color .2s;}
+  .track.open{border-color:var(--accent);margin-bottom:8px;margin-top:4px;z-index:1;position:relative;}
+  .track.highlight{animation:flash 1.4s ease;}
+  @keyframes flash{0%{box-shadow:0 0 0 3px rgba(192,57,43,.5);}100%{box-shadow:none;}}
+  .track-header{display:grid;grid-template-columns:40px 1fr auto auto;align-items:center;gap:16px;padding:14px 20px;cursor:pointer;transition:background .15s;user-select:none;}
+  .track-header:hover{background:var(--bg3);}
+  .track-num{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:center;}
+  .track.open .track-num{color:var(--accent);}
+  .track-name{font-family:var(--font-body);font-size:18px;font-weight:400;color:var(--text);}
+  .track-dur{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+  .track-arrow{font-size:10px;color:var(--subtle);transition:transform .25s;}
+  .track.open .track-arrow{transform:rotate(180deg);color:var(--accent);}
+  .track-body{display:none;border-top:1px solid var(--border);}
+  .track.open .track-body{display:block;}
+  .track-description{padding:20px 24px 16px;font-family:var(--font-body);font-size:17px;line-height:1.7;color:var(--text);font-weight:300;border-bottom:1px solid var(--border);}
+  .track-player{padding:16px 24px;background:var(--bg3);border-bottom:1px solid var(--border);}
+  .player-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;color:var(--muted);margin-bottom:10px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+  .player-label::before{content:'';display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;}
+  .yt-embed{width:100%;aspect-ratio:16/9;border:none;background:#000;display:block;}
+  .spotify-embed{width:100%;border:none;background:transparent;border-radius:0;height:80px;margin-top:8px;}
+  .track-lyrics-toggle{padding:12px 24px;display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:var(--muted);cursor:pointer;border-bottom:1px solid var(--border);transition:color .2s;background:none;border-left:none;border-right:none;border-top:none;text-align:left;width:100%;}
+  .track-lyrics-toggle:hover{color:var(--accent);}
+  .track-lyrics{padding:20px 24px 24px;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--muted);white-space:pre-wrap;display:none;background:var(--bg2);}
+  .track-lyrics.visible{display:block;}
 
-  header {
-    position: sticky; top: 0; z-index: 100;
-    background: var(--bg); border-bottom: 1px solid var(--border);
-    padding: 0 32px; height: 64px;
-    display: flex; align-items: center; justify-content: space-between;
-    backdrop-filter: blur(12px);
-  }
-  .logo { font-family: var(--font-title); font-size: 24px; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
-  .logo span { color: var(--accent); }
-  .header-controls { display: flex; align-items: center; gap: 16px; }
-  .toggle-btn {
-    background: none; border: 1px solid var(--border); color: var(--muted);
-    padding: 6px 14px; font-family: var(--font-mono); font-size: 11px;
-    cursor: pointer; letter-spacing: 0.1em; transition: all 0.2s;
-  }
-  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+  /* ── SIDEBAR ── */
+  .sidebar-card{background:var(--card);border:1px solid var(--border);padding:20px;margin-bottom:20px;}
+  .sidebar-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:14px;}
+  .sidebar-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--border);font-size:16px;}
+  .sidebar-row:last-child{border-bottom:none;}
+  .sidebar-key{color:var(--muted);font-size:14px;}
+  .sidebar-val{color:var(--text);font-weight:400;text-align:right;}
+  .sidebar-val a{color:var(--text);text-decoration:none;}
+  .sidebar-val a:hover{color:var(--accent);text-decoration:underline;}
 
-  .breadcrumb {
-    padding: 16px 32px; font-family: var(--font-mono);
-    font-size: 11px; letter-spacing: 0.12em; color: var(--muted);
-    display: flex; align-items: center; gap: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  .breadcrumb a { color: var(--muted); text-decoration: none; }
-  .breadcrumb a:hover { color: var(--accent); }
-  .breadcrumb .sep { color: var(--subtle); }
-  .breadcrumb .current { color: var(--text); }
+  /* Rating grande */
+  .rating-big{font-family:var(--font-title);font-size:52px;color:var(--text);letter-spacing:.02em;line-height:1;margin-bottom:4px;}
+  .rating-sub{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.15em;}
 
-  .album-hero {
-    display: grid; grid-template-columns: 320px 1fr; gap: 0;
-    border-bottom: 1px solid var(--border);
-    max-width: 1100px; margin: 0 auto; padding: 48px 32px;
-  }
-  .cover-col { position: relative; }
-  .cover-img { width: 100%; max-width: 300px; aspect-ratio: 1; object-fit: cover; display: block; border: 1px solid var(--border); }
-  .cover-badge {
-    position: absolute; bottom: -1px; left: 0;
-    background: var(--accent); color: white;
-    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; padding: 4px 10px;
-  }
-  .meta-col { padding-left: 48px; display: flex; flex-direction: column; justify-content: flex-end; }
-  .meta-artist { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
-  /* Artist name in hero is also a link */
-  .meta-artist a { color: var(--accent); text-decoration: none; }
-  .meta-artist a:hover { text-decoration: underline; }
-  .meta-title { font-family: var(--font-title); font-size: clamp(42px, 6vw, 80px); letter-spacing: 0.04em; line-height: 0.92; color: var(--text); margin-bottom: 24px; }
-  .meta-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-  .pill { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; padding: 5px 12px; border: 1px solid var(--border); color: var(--muted); text-transform: uppercase; }
-  .pill.accent { border-color: var(--accent); color: var(--accent); }
-  .meta-stats { display: flex; gap: 32px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
-  .meta-stats strong { display: block; font-size: 22px; color: var(--text); font-family: var(--font-title); letter-spacing: 0.05em; }
+  /* Canzoni preferite */
+  .fav-track{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:15px;}
+  .fav-track:last-child{border-bottom:none;}
+  .fav-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;flex-shrink:0;}
+  .fav-name{color:var(--text);font-family:var(--font-body);font-weight:400;}
 
-  .content-wrap {
-    max-width: 1100px; margin: 0 auto; padding: 48px 32px 80px;
-    display: grid; grid-template-columns: 1fr 320px; gap: 48px;
-  }
-  .section { margin-bottom: 48px; }
-  .section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-  .prose { font-family: var(--font-body); font-size: 18px; line-height: 1.75; color: var(--text); font-weight: 300; }
+  /* Commento personale */
+  .my-comment{font-family:var(--font-body);font-size:16px;font-style:italic;line-height:1.7;color:var(--muted);padding-top:4px;}
+  .my-comment::before{content:'"';color:var(--accent);font-size:24px;line-height:.5;vertical-align:-.4em;margin-right:2px;}
+  .my-comment::after{content:'"';color:var(--accent);font-size:24px;line-height:.5;vertical-align:-.4em;margin-left:2px;}
 
-  .tracklist { display: flex; flex-direction: column; gap: 0; }
-  .track { border: 1px solid var(--border); margin-bottom: -1px; transition: border-color 0.2s; }
-  .track.open { border-color: var(--accent); margin-bottom: 8px; margin-top: 4px; z-index: 1; position: relative; }
-  /* highlight when opened via URL param */
-  .track.highlight { animation: flashHighlight 1.2s ease; }
-  @keyframes flashHighlight {
-    0%   { box-shadow: 0 0 0 3px rgba(192,57,43,0.5); }
-    100% { box-shadow: none; }
-  }
-
-  .track-header { display: grid; grid-template-columns: 40px 1fr auto auto; align-items: center; gap: 16px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; user-select: none; }
-  .track-header:hover { background: var(--bg3); }
-  .track-num { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: center; }
-  .track.open .track-num { color: var(--accent); }
-  .track-name { font-family: var(--font-body); font-size: 18px; font-weight: 400; color: var(--text); }
-  .track-dur { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
-  .track-arrow { font-size: 10px; color: var(--subtle); transition: transform 0.25s; }
-  .track.open .track-arrow { transform: rotate(180deg); color: var(--accent); }
-
-  .track-body { display: none; border-top: 1px solid var(--border); }
-  .track.open .track-body { display: block; }
-  .track-description { padding: 20px 24px 16px; font-family: var(--font-body); font-size: 17px; line-height: 1.7; color: var(--text); font-weight: 300; border-bottom: 1px solid var(--border); }
-
-  .track-player { padding: 16px 24px; background: var(--bg3); border-bottom: 1px solid var(--border); }
-  .player-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-  .player-label::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-  .yt-embed { width: 100%; aspect-ratio: 16/9; border: none; background: #000; display: block; }
-  .spotify-embed { width: 100%; border: none; background: transparent; border-radius: 0; height: 80px; margin-top: 8px; }
-
-  .track-lyrics-toggle {
-    padding: 12px 24px; display: flex; align-items: center; gap: 8px;
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em;
-    color: var(--muted); cursor: pointer; border-bottom: 1px solid var(--border);
-    transition: color 0.2s; background: none;
-    border-left: none; border-right: none; border-top: none;
-    text-align: left; width: 100%;
-  }
-  .track-lyrics-toggle:hover { color: var(--accent); }
-  .track-lyrics { padding: 20px 24px 24px; font-family: var(--font-mono); font-size: 13px; line-height: 1.9; color: var(--muted); white-space: pre-wrap; display: none; background: var(--bg2); }
-  .track-lyrics.visible { display: block; }
-
-  .sidebar-card { background: var(--card); border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
-  .sidebar-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; }
-  .sidebar-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 16px; }
-  .sidebar-row:last-child { border-bottom: none; }
-  .sidebar-key { color: var(--muted); font-size: 14px; }
-  .sidebar-val { color: var(--text); font-weight: 400; text-align: right; }
-  /* Artist link in sidebar */
-  .sidebar-val a { color: var(--text); text-decoration: none; }
-  .sidebar-val a:hover { color: var(--accent); text-decoration: underline; }
-
-  .poem { font-family: var(--font-body); font-size: 16px; font-style: italic; line-height: 1.8; color: var(--muted); white-space: pre-wrap; border-left: 2px solid var(--accent); padding-left: 16px; margin: 16px 0; }
-
-  .loading-full { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
-  .spinner { width: 32px; height: 32px; border: 2px solid var(--subtle); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--subtle); }
-
-  @media (max-width: 768px) {
-    .album-hero { grid-template-columns: 1fr; padding: 24px 16px; }
-    .meta-col { padding-left: 0; padding-top: 24px; }
-    .cover-img { max-width: 220px; }
-    .content-wrap { grid-template-columns: 1fr; gap: 32px; padding: 24px 16px 60px; }
-    .content-sidebar { order: -1; }
-    header { padding: 0 16px; }
-    .breadcrumb { padding: 12px 16px; }
-  }
+  .poem{font-family:var(--font-body);font-size:16px;font-style:italic;line-height:1.8;color:var(--muted);white-space:pre-wrap;border-left:2px solid var(--accent);padding-left:16px;margin:16px 0;}
+  .loading-full{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+  .spinner{width:32px;height:32px;border:2px solid var(--subtle);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--subtle);}
+  @media(max-width:768px){.album-hero{grid-template-columns:1fr;padding:24px 16px;}.meta-col{padding-left:0;padding-top:24px;}.cover-img{max-width:220px;}.content-wrap{grid-template-columns:1fr;gap:32px;padding:24px 16px 60px;}.content-sidebar{order:-1;}header{padding:0 16px;}.breadcrumb{padding:12px 16px;}}
 </style>
 </head>
 <body>
-
 <header>
   <a class="logo" href="./index.html">WHITE <span>VINYL</span></a>
   <div class="header-controls">
@@ -170,96 +109,104 @@
     <button class="toggle-btn" id="theme-toggle">☀</button>
   </div>
 </header>
-
-<div class="breadcrumb" id="breadcrumb">
+<div class="breadcrumb">
   <a href="./index.html">Home</a>
   <span class="sep">›</span>
-  <!-- bc-artist diventa un link cliccabile -->
   <a class="current" id="bc-artist" href="#">…</a>
   <span class="sep">›</span>
   <span class="current" id="bc-album">…</span>
 </div>
-
 <div id="page-content">
   <div class="loading-full">
     <div class="spinner"></div>
-    <p style="font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:0.15em">CARICAMENTO</p>
+    <p style="font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.15em">CARICAMENTO</p>
   </div>
 </div>
-
 <script>
-const SUPABASE_URL = 'https://yxjqrcupvlbduvcixudu.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4anFyY3VwdmxiZHV2Y2l4dWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODUyNTcsImV4cCI6MjA5MTY2MTI1N30.rd_Ng1QhZC3556bNUjkpe0uAcnIsJfgf6N3-FcQWWE0';
+const SUPABASE_URL='https://yxjqrcupvlbduvcixudu.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4anFyY3VwdmxiZHV2Y2l4dWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODUyNTcsImV4cCI6MjA5MTY2MTI1N30.rd_Ng1QhZC3556bNUjkpe0uAcnIsJfgf6N3-FcQWWE0';
+const{createClient}=supabase;
+const db=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let lang=localStorage.getItem('ma-lang')||'it';
+let theme=localStorage.getItem('ma-theme')||'dark';
+let stats=JSON.parse(localStorage.getItem('ma-stats')||'{}');
+let album=null;
 
-let lang  = localStorage.getItem('ma-lang')  || 'it';
-let theme = localStorage.getItem('ma-theme') || 'dark';
-let stats = JSON.parse(localStorage.getItem('ma-stats') || '{}');
-let album = null;
+function t(it,en){return lang==='it'?it:en;}
+function toSlug(n){return encodeURIComponent(n.toLowerCase().replace(/\s+/g,'-'));}
 
-function t(it, en) { return lang === 'it' ? it : en; }
-function toSlug(name) { return encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-')); }
-
-async function loadAlbum() {
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug');
-
-  try {
-    const db_client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const { data, error } = await db_client
-      .from('albums').select('*').eq('slug', slug).single();
-    if (error) throw error;
-    album = data;
+async function loadAlbum(){
+  const slug=new URLSearchParams(window.location.search).get('slug');
+  try{
+    const{data,error}=await db.from('albums').select('*').eq('slug',slug).single();
+    if(error)throw error;
+    album=data;
     render(album);
-  } catch(e) {
-    document.getElementById('page-content').innerHTML =
-      `<div style="padding:80px 32px;text-align:center;font-family:var(--font-mono);color:var(--muted)">Errore: ${e.message}</div>`;
+  }catch(e){
+    document.getElementById('page-content').innerHTML=`<div style="padding:80px 32px;text-align:center;font-family:var(--font-mono);color:var(--muted)">Errore: ${e.message}</div>`;
   }
 }
 
-function render(a) {
-  const artistSlug = toSlug(a.artist);
-  const artistUrl  = `./artist.html?slug=${artistSlug}`;
+function render(a){
+  const artistUrl=`./artist.html?slug=${toSlug(a.artist)}`;
+  const bc=document.getElementById('bc-artist');
+  bc.textContent=a.artist; bc.href=artistUrl; bc.style.color='var(--muted)';
+  bc.onmouseover=()=>bc.style.color='var(--accent)';
+  bc.onmouseout=()=>bc.style.color='var(--muted)';
+  document.getElementById('bc-album').textContent=a.album;
+  document.title=`${a.artist} — ${a.album} | WhiteVinyl`;
 
-  // Breadcrumb
-  const bcArtist = document.getElementById('bc-artist');
-  bcArtist.textContent = a.artist;
-  bcArtist.href = artistUrl;
-  bcArtist.style.color = 'var(--muted)';
-  bcArtist.addEventListener('mouseover', () => bcArtist.style.color = 'var(--accent)');
-  bcArtist.addEventListener('mouseout',  () => bcArtist.style.color = 'var(--muted)');
+  const totalTracks=(a.tracklist||[]).length;
+  const totalDuration=calcDuration(a.tracklist);
 
-  document.getElementById('bc-album').textContent = a.album;
-  document.title = `${a.artist} — ${a.album} | WhiteVinyl`;
+  const pillsHtml=(a.genre||[]).map(g=>`<span class="pill accent">${g}</span>`)
+    .concat((a.tags||[]).map(tag=>`<span class="pill">${tag}</span>`)).join('');
 
-  const totalTracks   = (a.tracklist || []).length;
-  const totalDuration = calcTotalDuration(a.tracklist);
-
-  const pillsHtml = (a.genre || []).map(g =>
-    `<span class="pill accent">${g}</span>`
-  ).concat(
-    (a.tags || []).map(tag => `<span class="pill">${tag}</span>`)
-  ).join('');
-
-  let extraHtml = '';
-  (a.extra_sections || []).forEach(s => {
-    const title   = t(s.title_it, s.title_en);
-    const content = t(s.content_it, s.content_en);
-    const poem    = s.poem ? `<div class="poem">${s.poem}</div>` : '';
-    extraHtml += `<div class="section"><p class="section-label">${title}</p><p class="prose">${content}</p>${poem}</div>`;
+  let extraHtml='';
+  (a.extra_sections||[]).forEach(s=>{
+    const poem=s.poem?`<div class="poem">${s.poem}</div>`:'';
+    extraHtml+=`<div class="section"><p class="section-label">${t(s.title_it,s.title_en)}</p><p class="prose">${t(s.content_it,s.content_en)}</p>${poem}</div>`;
   });
 
-  const tracklistHtml = (a.tracklist || []).map(track => renderTrack(track)).join('');
+  const tracklistHtml=(a.tracklist||[]).map(renderTrack).join('');
 
-  document.getElementById('page-content').innerHTML = `
+  // ── Sidebar: Rating ──────────────────────────────────
+  let ratingHtml='';
+  if(a.rating){
+    ratingHtml=`<div class="sidebar-card">
+      <p class="sidebar-title">${t('Voto','Rating')}</p>
+      <div class="rating-big">${a.rating}</div>
+      <div class="rating-sub">/ 10</div>
+    </div>`;
+  }
+
+  // ── Sidebar: Canzoni preferite ────────────────────────
+  let favHtml='';
+  const favTracks=a.fav_songs||[];
+  if(favTracks.length){
+    const rows=favTracks.map(name=>`<div class="fav-track"><div class="fav-dot"></div><span class="fav-name">${name}</span></div>`).join('');
+    favHtml=`<div class="sidebar-card">
+      <p class="sidebar-title">${t('Canzoni preferite','Favourite tracks')}</p>
+      ${rows}
+    </div>`;
+  }
+
+  // ── Sidebar: Commento personale ───────────────────────
+  let commentHtml='';
+  const comment=t(a.my_comment_it,a.my_comment_en);
+  if(comment){
+    commentHtml=`<div class="sidebar-card">
+      <p class="sidebar-title">${t('Il mio commento','My take')}</p>
+      <p class="my-comment">${comment}</p>
+    </div>`;
+  }
+
+  document.getElementById('page-content').innerHTML=`
     <div class="album-hero">
       <div class="cover-col">
-        ${a.cover_url
-          ? `<img class="cover-img" src="${a.cover_url}" alt="${a.album}">`
-          : `<div class="cover-img" style="background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:64px;color:var(--subtle)">♩</div>`}
-        <div class="cover-badge">${a.year || '—'}</div>
+        ${a.cover_url?`<img class="cover-img" src="${a.cover_url}" alt="${a.album}">`:`<div class="cover-img" style="background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:64px;color:var(--subtle)">♩</div>`}
+        <div class="cover-badge">${a.year||'—'}</div>
       </div>
       <div class="meta-col">
         <p class="meta-artist"><a href="${artistUrl}">${a.artist}</a></p>
@@ -271,177 +218,102 @@ function render(a) {
         </div>
       </div>
     </div>
-
     <div class="content-wrap">
       <div class="content-main">
         <div class="section">
           <p class="section-label">${t('Introduzione','Introduction')}</p>
-          <p class="prose">${t(a.review_it, a.review_en) || ''}</p>
+          <p class="prose">${t(a.review_it,a.review_en)||''}</p>
         </div>
-
-        ${a.cover_story_it ? `
-        <div class="section">
-          <p class="section-label">${t('La copertina','The cover')}</p>
-          <p class="prose">${t(a.cover_story_it, a.cover_story_en)}</p>
-        </div>` : ''}
-
+        ${a.cover_story_it?`<div class="section"><p class="section-label">${t('La copertina','The cover')}</p><p class="prose">${t(a.cover_story_it,a.cover_story_en)}</p></div>`:''}
         ${extraHtml}
-
         <div class="section">
           <p class="section-label">${t('Tracklist','Tracklist')}</p>
           <div class="tracklist">${tracklistHtml}</div>
         </div>
       </div>
-
       <aside class="content-sidebar">
         <div class="sidebar-card">
           <p class="sidebar-title">${t('Info album','Album info')}</p>
-          <div class="sidebar-row">
-            <span class="sidebar-key">${t('Artista','Artist')}</span>
-            <span class="sidebar-val"><a href="${artistUrl}">${a.artist}</a></span>
-          </div>
+          <div class="sidebar-row"><span class="sidebar-key">${t('Artista','Artist')}</span><span class="sidebar-val"><a href="${artistUrl}">${a.artist}</a></span></div>
           <div class="sidebar-row"><span class="sidebar-key">${t('Titolo','Title')}</span><span class="sidebar-val">${a.album}</span></div>
-          <div class="sidebar-row"><span class="sidebar-key">${t('Anno','Year')}</span><span class="sidebar-val">${a.year || '—'}</span></div>
+          <div class="sidebar-row"><span class="sidebar-key">${t('Anno','Year')}</span><span class="sidebar-val">${a.year||'—'}</span></div>
           <div class="sidebar-row"><span class="sidebar-key">${t('Tracce','Tracks')}</span><span class="sidebar-val">${totalTracks}</span></div>
           <div class="sidebar-row"><span class="sidebar-key">${t('Durata','Duration')}</span><span class="sidebar-val">${totalDuration}</span></div>
         </div>
         <div class="sidebar-card">
           <p class="sidebar-title">${t('Generi','Genres')}</p>
-          ${(a.genre || []).map(g => `<div class="sidebar-row"><span class="sidebar-val">${g}</span></div>`).join('')}
+          ${(a.genre||[]).map(g=>`<div class="sidebar-row"><span class="sidebar-val">${g}</span></div>`).join('')}
         </div>
-        <div class="sidebar-card">
-          <p class="sidebar-title">Tag</p>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:4px">
-            ${(a.tags || []).map(tag => `<span class="pill">${tag}</span>`).join('')}
-          </div>
-        </div>
-        ${a.rating ? `
-        <div class="sidebar-card">
-          <p class="sidebar-title">${t('Voto','Rating')}</p>
-          <div class="sidebar-row"><span class="sidebar-val">${a.rating} / 10</span></div>
-        </div>` : ''}
+        ${(a.tags||[]).length?`<div class="sidebar-card"><p class="sidebar-title">Tag</p><div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:4px">${(a.tags||[]).map(tag=>`<span class="pill">${tag}</span>`).join('')}</div></div>`:''}
+        ${ratingHtml}
+        ${favHtml}
+        ${commentHtml}
       </aside>
-    </div>
-  `;
+    </div>`;
 
-  // Bind track toggles
-  document.querySelectorAll('.track-header').forEach(h => {
-    h.addEventListener('click', () => toggleTrack(h.closest('.track')));
-  });
-  document.querySelectorAll('.track-lyrics-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lyrics = btn.nextElementSibling;
-      const isOpen = lyrics.classList.toggle('visible');
-      btn.textContent = isOpen
-        ? `▲ ${t('Nascondi testi','Hide lyrics')}`
-        : `▼ ${t('Mostra testi','Show lyrics')}`;
+  document.querySelectorAll('.track-header').forEach(h=>{h.addEventListener('click',()=>toggleTrack(h.closest('.track')));});
+  document.querySelectorAll('.track-lyrics-toggle').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const lyr=btn.nextElementSibling;
+      const open=lyr.classList.toggle('visible');
+      btn.textContent=open?`▲ ${t('Nascondi testi','Hide lyrics')}`:`▼ ${t('Mostra testi','Show lyrics')}`;
     });
   });
-
-  // Auto-apri traccia se arrivato dalla ricerca (?track=NomeTraccia)
-  autoOpenTrackFromUrl();
+  autoOpen();
 }
 
-function renderTrack(tr) {
-  const desc = t(tr.description_it, tr.description_en) || '';
-  const ytEmbed = tr.youtube_id ? `
-    <div class="track-player">
-      <div class="player-label">YOUTUBE</div>
-      <iframe class="yt-embed"
-        src="https://www.youtube.com/embed/${tr.youtube_id}?enablejsapi=1"
-        allow="autoplay; encrypted-media" allowfullscreen loading="lazy" title="${tr.title}">
-      </iframe>
-    </div>` : '';
-
-  const spEmbed = tr.spotify_id ? `
-    <div class="track-player" style="background:var(--bg2)">
-      <div class="player-label">SPOTIFY</div>
-      <iframe class="spotify-embed"
-        src="https://open.spotify.com/embed/track/${tr.spotify_id}?utm_source=generator&theme=0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
-      </iframe>
-    </div>` : '';
-
-  const lyricsSection = tr.lyrics ? `
-    <button class="track-lyrics-toggle">▼ ${t('Mostra testi','Show lyrics')}</button>
-    <pre class="track-lyrics">${tr.lyrics}</pre>` : '';
-
-  return `
-    <div class="track" data-slug="${tr.title}">
-      <div class="track-header">
-        <span class="track-num">${String(tr.number).padStart(2,'0')}</span>
-        <span class="track-name">${tr.title}</span>
-        <span class="track-dur">${tr.duration || ''}</span>
-        <span class="track-arrow">▼</span>
-      </div>
-      <div class="track-body">
-        ${desc ? `<div class="track-description">${desc}</div>` : ''}
-        ${ytEmbed}${spEmbed}${lyricsSection}
-      </div>
-    </div>`;
+function renderTrack(tr){
+  const desc=t(tr.description_it,tr.description_en)||'';
+  const yt=tr.youtube_id?`<div class="track-player"><div class="player-label">YOUTUBE</div><iframe class="yt-embed" src="https://www.youtube.com/embed/${tr.youtube_id}?enablejsapi=1" allow="autoplay;encrypted-media" allowfullscreen loading="lazy" title="${tr.title}"></iframe></div>`:'';
+  const sp=tr.spotify_id?`<div class="track-player" style="background:var(--bg2)"><div class="player-label">SPOTIFY</div><iframe class="spotify-embed" src="https://open.spotify.com/embed/track/${tr.spotify_id}?utm_source=generator&theme=0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>`:'';
+  const lyr=tr.lyrics?`<button class="track-lyrics-toggle">▼ ${t('Mostra testi','Show lyrics')}</button><pre class="track-lyrics">${tr.lyrics}</pre>`:'';
+  return `<div class="track" data-slug="${tr.title}">
+    <div class="track-header">
+      <span class="track-num">${String(tr.number).padStart(2,'0')}</span>
+      <span class="track-name">${tr.title}</span>
+      <span class="track-dur">${tr.duration||''}</span>
+      <span class="track-arrow">▼</span>
+    </div>
+    <div class="track-body">${desc?`<div class="track-description">${desc}</div>`:''}${yt}${sp}${lyr}</div>
+  </div>`;
 }
 
-function toggleTrack(trackEl) {
-  const wasOpen = trackEl.classList.contains('open');
-  document.querySelectorAll('.track.open').forEach(t => t.classList.remove('open'));
-  if (!wasOpen) trackEl.classList.add('open');
-  const slug = trackEl.dataset.slug;
-  if (slug) {
-    stats[`track-${slug}`] = (stats[`track-${slug}`] || 0) + 1;
-    localStorage.setItem('ma-stats', JSON.stringify(stats));
-  }
+function toggleTrack(el){
+  const was=el.classList.contains('open');
+  document.querySelectorAll('.track.open').forEach(t=>t.classList.remove('open'));
+  if(!was){el.classList.add('open');}
+  const slug=el.dataset.slug;
+  if(slug){stats[`track-${slug}`]=(stats[`track-${slug}`]||0)+1;localStorage.setItem('ma-stats',JSON.stringify(stats));}
 }
 
-// Apre e scrolla alla traccia specificata nel parametro ?track=
-function autoOpenTrackFromUrl() {
-  const params    = new URLSearchParams(window.location.search);
-  const trackName = params.get('track');
-  if (!trackName) return;
-
-  const decoded = decodeURIComponent(trackName);
-  document.querySelectorAll('.track').forEach(el => {
-    if (el.dataset.slug === decoded) {
-      el.classList.add('open', 'highlight');
-      setTimeout(() => {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 350);
+function autoOpen(){
+  const track=new URLSearchParams(window.location.search).get('track');
+  if(!track)return;
+  const dec=decodeURIComponent(track);
+  document.querySelectorAll('.track').forEach(el=>{
+    if(el.dataset.slug===dec){
+      el.classList.add('open','highlight');
+      setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),350);
     }
   });
 }
 
-function calcTotalDuration(tracklist) {
-  if (!tracklist || !tracklist.length) return '—';
-  let total = 0;
-  tracklist.forEach(t => {
-    if (!t.duration) return;
-    const parts = t.duration.split(':');
-    total += parseInt(parts[0]) * 60 + parseInt(parts[1]);
-  });
-  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2,'0')}`;
+function calcDuration(tracklist){
+  if(!tracklist?.length)return'—';
+  let tot=0;
+  tracklist.forEach(t=>{if(!t.duration)return;const p=t.duration.split(':');tot+=parseInt(p[0])*60+parseInt(p[1]);});
+  return`${Math.floor(tot/60)}:${String(tot%60).padStart(2,'0')}`;
 }
 
-function applyTheme() {
-  document.documentElement.dataset.theme = theme === 'light' ? 'light' : '';
-  document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀' : '☾';
+function applyTheme(){
+  document.documentElement.dataset.theme=theme==='light'?'light':'';
+  document.getElementById('theme-toggle').textContent=theme==='dark'?'☀':'☾';
 }
-
-document.getElementById('lang-toggle').addEventListener('click', () => {
-  lang = lang === 'it' ? 'en' : 'it';
-  localStorage.setItem('ma-lang', lang);
-  document.getElementById('lang-toggle').textContent = lang === 'it' ? 'EN' : 'IT';
-  document.documentElement.lang = lang;
-  if (album) render(album);
-});
-
-document.getElementById('theme-toggle').addEventListener('click', () => {
-  theme = theme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('ma-theme', theme);
-  applyTheme();
-});
-
+document.getElementById('lang-toggle').addEventListener('click',()=>{lang=lang==='it'?'en':'it';localStorage.setItem('ma-lang',lang);document.getElementById('lang-toggle').textContent=lang==='it'?'EN':'IT';document.documentElement.lang=lang;if(album)render(album);});
+document.getElementById('theme-toggle').addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('ma-theme',theme);applyTheme();});
 applyTheme();
-document.getElementById('lang-toggle').textContent = lang === 'it' ? 'EN' : 'IT';
-document.documentElement.lang = lang;
+document.getElementById('lang-toggle').textContent=lang==='it'?'EN':'IT';
+document.documentElement.lang=lang;
 loadAlbum();
 </script>
 </body>
